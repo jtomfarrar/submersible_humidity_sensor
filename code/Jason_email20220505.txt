@@ -1,0 +1,10 @@
+Hi Guys
+
+I figured out how to log data with timestamps, and I attempted to log data from the temperature bridge as well.
+The time is difficult to set on the bridge, but should be very close.
+
+The big things to note are that you can see that I move the standard probe into the next test environment several minutes before I move the probes.
+The probes started and ended the run in a box that hopefully dampened otherwise uncontrollable temperature activity.
+I tried to give the probes a good shake as I transitioned them from place to place.
+
+jason
