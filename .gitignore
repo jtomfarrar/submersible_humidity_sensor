@@ -48,7 +48,8 @@ coverage.xml
 *.pot
 
 # Django stuff:
-*.log
+# *.log
+# Jason Smith's temperature logger data files are .log!
 
 # Sphinx documentation
 docs/_build/
