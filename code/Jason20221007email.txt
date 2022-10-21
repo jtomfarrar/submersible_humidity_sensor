@@ -1,0 +1,17 @@
+Hi Guys
+A thousand apologies, but I thought I had sent this data along.
+
+Some notes:
+603, 604, and 605 are the RBR temp probes.
+I want to confirm this at home but I believe that 603 has the fat temp
+probe, 604 is a skinny probe with no stainless mesh, and 605 is a skinny
+probe with stainless mesh.
+The giant excel file that begins with "rot_..." is the RH/temp probe
+that I set up next to the RBR probes.
+I'll send the wind data in another email.
+The temp probes were started at noon local time on 05Sep22.
+The water spray started at 12:05pm local, and sprayed again every hour
+after that.
+I stopped collecting data after the 5:05pm spray.
+Jason
+

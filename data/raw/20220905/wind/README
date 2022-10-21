@@ -1,0 +1,60 @@
+2021/09/27 Ben Greenwood; Jason Smith request - add ASCII text output for SWR
+2021/02/09 Ben Greenwood; add support for SWND (SD version)
+2020/08/27 Ben Greenwood; fix bug in WXT decoder that presents when bad records are removed - see NTAS19 burnin 
+2020/06/05 Ben Greenwood; identify and discard records with bad timestamps
+2019/11/18 Ben Greenwood; known bug -- get_sd_wxt520.m gets stuck (line178) compass=compass' if no data is found within date range
+2019/10/02 Ben Greenwood; Update Rotronic decoder and uop_decode to work with new_plot
+2019/05/29 Ben Greenwood; Integrate Campbell decoder into uop_plot
+2019/04/03 Ben Greenwood; Implement ability to average wind variables, fix bug in WXT decoder - compass was not being added to wdir
+2019/02/27 Ben Greenwood; Integrate ASIMET standalone (SD) decoder into script
+2018/11/06 Ben Greenwood; Integrate ASIMET standalone (Compact flash) decoder into script
+2018/07/20 Ben Greenwood; Integrate Sebastien's Lascar decoder into uop_plot.m
+2018/05/24 Ben Greenwood; Create uop_plot.m
+
+This code is capable of processing and plotting the following sensors:
+ * ASIMET loggers
+ * ASIMET standalone (Compact Flash + SD versions)
+ * Rotronic
+ * SBE39AT
+ * WXT520 (SD version)
+ * Lascar
+ * Campbell systems(2019)
+
+Instructions
+==============
+0) You should have uop_decode.m, README, and a dependencies sub-directory.
+1) Modify the top section of uop_decode.m to describe your project.
+2) Place raw files in same directory as uop_decode.m
+3) Use Matlab to run script uop_decode.m
+4) After the script completes, all output will be organized in a subdirectory
+
+
+Output from this code is organized in the following way. Note that all raw 
+files and processing code is also included into the output directory so that
+the output directory is capable of self-replication.
+
+[output_directory]      
+  * [processed]
+      - WXT.mat
+      - L05.mat
+      - Rotronic.mat
+      - SBE39.mat
+      - Lascar.mat
+  * [figs]
+      - project_2018_atmp.fig
+      - project_2018_bpr.fig
+      - project_0218_compass.fig
+      - ...
+  * [dependencies]
+      - ...
+  - WXT_raw.DAT
+  - Logger_raw.DAT
+  - Rotronic_raw.csv
+  - SBE39_raw.asc
+  - Lascar.csv
+  - README
+  - uop_decode.m
+
+TODO
+===============
+add remaining UOP decoders to script
