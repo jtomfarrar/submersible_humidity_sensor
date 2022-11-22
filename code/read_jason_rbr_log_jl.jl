@@ -273,7 +273,7 @@ end
 
 uniqueidx(v) = unique(i -> v[i], eachindex(v))
 
-"return interpolator to map T(x) to T(y) at knots y"
+"return interpolator to map T(x) at knots x to T(y) at y"
 function interpx2y(x::Vector, T::Vector)
     ui = uniqueidx(x)
     itp = LinearInterpolation(x[ui], T[ui])
@@ -306,8 +306,11 @@ qtest = q_psychro.(t603_605.-0.5, t605.-0.5, p0)
 qtest604 = q_psychro.(t604_605.-1.0, t605.-1.0, p0)
 
 qw = qs.(p0, t603_605)
+qs604 = qs.(p0, t604_605) # sat spec hum at dry bulb skinny probe
 
-rot_q = rot.Humidity/100 .* qs.(p0, rot.Temperature) # kg/kg
+rot_qs = qs.(p0, rot.Temperature) # kg/kg
+rot_q = rot.Humidity/100 .* rot_qs
+
 rot_tw = Twet.(rot.Temperature, rot_q, 101500.0)
 
 # interpolate rotronics T and Tw to 605 time
@@ -315,6 +318,8 @@ rot_dt = Date(1,1,1) .+ rot.Time + Second(60*7.5)
 # rot_dv = dv.( rot_dt ) # datevalue
 t_rot_605 =  itp_to_605(rot_dt, rot.Temperature)
 tw_rot_605 = itp_to_605(rot_dt, rot_tw)
+q_rot_605 =  itp_to_605(rot_dt, rot_q)
+qs_rot_605 =  itp_to_605(rot_dt, rot_qs)
 
 # %%
 
@@ -327,7 +332,8 @@ ii = t605.<t603_605
 mask = zeros(size(ii))
 mask[.!ii] .= NaN
 plot(dtime605, mask.+q )
-plot(dtime605, mask.+qw)
+plot(dtime605, qs_rot_605) # mask.+qw)
+plot(dtime605, qw)
 
 plot( Date(1,1,1) .+ rot.Time + Second(60*7.5) , rot_q )
 # tw = Twet(t603_605, q, p0)
@@ -339,8 +345,22 @@ X = ax.xaxis
 mdates = PyPlot.matplotlib.dates
 X.set_major_locator(mdates.MinuteLocator(10))
 X.set_major_formatter(mdates.DateFormatter("%H:%M")) # Specify the format - %b gives us Jan, Feb...
-legend(["q psychrometer", "qs", "q Rotronics",
+legend(["q psychrometer", "qs Rotronics", "qs(603)", "q Rotronics",
         "T603 -0.5", "T604 -1.0"]; frameon=false)
+
+# %%
+# relative humidity
+subplot(1,1,1)
+
+plot(dtime605, 100q_rot_605./qs_rot_605)
+plot(dtime605, mask.+100q./qs604)
+
+xlim([DateTime(1,1,1,13,0,0), DateTime(1,1,1,13,40,0)])
+X = ax.xaxis
+mdates = PyPlot.matplotlib.dates
+X.set_major_locator(mdates.MinuteLocator(10))
+X.set_major_formatter(mdates.DateFormatter("%H:%M")) # Specify the format - %b gives us Jan, Feb...
+legend(["RH Rotronics", "RH psychrometer"]; frameon=false)
 
 # %%
 # plot T, Tw from 604-605 thermistor calculations
