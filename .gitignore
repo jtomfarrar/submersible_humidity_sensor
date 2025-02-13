@@ -75,8 +75,8 @@ target/
 # Jupyter NB Checkpoints
 .ipynb_checkpoints/
 
-# exclude data from source control by default
-data/
+## exclude data from source control by default
+# data/
 
 # exclude figures by default
 plots/
