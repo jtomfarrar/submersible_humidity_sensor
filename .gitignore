@@ -91,4 +91,3 @@ plots/
 # Mypy cache
 .mypy_cache/
 Manifest.toml
-data
