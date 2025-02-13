@@ -8,3 +8,13 @@ Code for developing algorithms for the psychrometric submersible humidity sensor
 --------
 
 <p><small>Project based on the <a target="_blank" href="https://github.com/jbusecke/cookiecutter-science-project">cookiecutter science project template</a>.</small></p>
+
+# Ideas for sampling protocol for prototype instrument
+- At start of sampling, record ship's position and time in UTC (preferably get ship's GPS log)
+- Record met obs (seas, wind speed, local time, cloud cover)
+- Submerge sensor (thermistor sting) for at least 5 minutes
+- Let instrument bob for at least 5 minutes
+
+
+
+
