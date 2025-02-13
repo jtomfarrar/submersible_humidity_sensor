@@ -1,0 +1,8 @@
+Humditiy sensor test 20241118
+
+17:17:43 - dunk/wet - but not turned on
+17:18:52 - unit turned on - fresh dunk/wet
+17:38:39 - dunk/wet
+17:58:13 - dunk/wet
+13:09:28 - dunk/wet
+13:20:53 - recovery (dunk on recovery)
