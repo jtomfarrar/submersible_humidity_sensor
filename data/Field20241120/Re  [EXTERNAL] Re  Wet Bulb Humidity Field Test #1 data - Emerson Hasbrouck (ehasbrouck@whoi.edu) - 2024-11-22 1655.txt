@@ -1,0 +1,248 @@
+﻿ RE: [EXTERNAL] Re: Wet Bulb Humidity Field Test #1 data
+Subject:
+RE: [EXTERNAL] Re: Wet Bulb Humidity Field Test #1 data
+From:
+Emerson Hasbrouck <ehasbrouck@whoi.edu>
+Date:
+11/22/2024, 4:55 PM
+To:
+"de Szoeke, Simon" <simon.deszoeke@oregonstate.edu>, Alexander Ekholm <aekholm@whoi.edu>, Steven Jayne <sjayne@whoi.edu>, tom farrar <tfarrar@whoi.edu>, Jason Smith <jsmith@whoi.edu>
+
+Hello Simon –
+
+ 
+
+Thank you for the detailed and easily digestible analysis. You make some salient and easily implemented suggestions to the sampling regime.
+
+ 
+
+Unfortunately, I did not see your suggestions until after I had returned from the second day of field testing. I made measurements in a similar fashion as the first day, with short “dunks” followed by a 5 minute air dry time. You can see the timing in the attached notes. In the attached image you can see the amount of line I had scoped out to keep the SHS away from the vessel. I was able to sharply tug on the recovery line and tip the SHS probes into the water, I did this every 5 minutes for about an hour.
+
+ 
+
+The Sentinel Buoy that I co-located with was again Sentinel 2, however this time it was upright and deployed while I was making measurements with the SHS as can be seen in the attached image.
+
+ 
+
+I am going back out on the Tioga sometime around 12/5. I think it would be great if we could schedule a meeting to discuss some impactful changes to the sampling effort.
+
+ 
+
+ 
+
+Cheers - Emerson
+
+ 
+
+ 
+
+---------------------------
+
+Emerson G. Hasbrouck
+
+ 
+
+WHOI
+
+Sr. Engineering Assistant
+
+Upper Ocean Processes Group
+
+Department of Physical Oceanography
+
+ 
+
+c:631.431.1251
+
+ 
+
+From: de Szoeke, Simon <simon.deszoeke@oregonstate.edu>
+Sent: Thursday, November 21, 2024 17:32 PM
+To: Alexander Ekholm <aekholm@whoi.edu>; Emerson Hasbrouck <ehasbrouck@whoi.edu>; Steven Jayne <sjayne@whoi.edu>; tom farrar <tfarrar@whoi.edu>; Jason Smith <jsmith@whoi.edu>
+Subject: Re: [EXTERNAL] Re: Wet Bulb Humidity Field Test #1 data
+
+ 
+
+I looked at the shortwave radiation (SW) for Nov 18 and solar warming still seems likely. 
+
+ 
+
+17 UTC is local noon, with Sentinel observing SW of 800 W/m^2. I suspect the radiometer is not level but pointed at the sun for Nov 16-19 (plot 2), when the max SW is greater than expected for winter at 41N.
+
+ 
+
+The shadow in Emerson's photo suggests a solar elevation angle of ~30 degrees. Solar zenith angle for this time of year is maximum around 30 degrees, which would give max SW ~ 550 W/m^2, as observed other days.
+
+ 
+
+Nevertheless, the thermometers are vertically oriented cylinders, so have plenty of exposure to slanted radiation.
+
+ 
+
+-Simon
+
+ 
+
+I couldn't find my solar zenith angle code quickly, but this works
+
+https://gml.noaa.gov/grad/antuv/SolarCalc.jsp
+
+Once you get past W longitude being positive, and just use UTC.
+
+From: de Szoeke, Simon <simon.deszoeke@oregonstate.edu>
+Sent: Wednesday, November 20, 2024 5:50 PM
+To: Alex Ekholm <aekholm@whoi.edu>; Emerson Hasbrouck <ehasbrouck@whoi.edu>; Steven Jayne <sjayne@whoi.edu>; tom farrar <tfarrar@whoi.edu>; Jason Smith <jsmith@whoi.edu>
+Subject: Re: [EXTERNAL] Re: Wet Bulb Humidity Field Test #1 data
+
+ 
+
+Here are the temperature time series. Blue dots at 11 C indicate Emerson's recorded dunk times (I replaced 13:00 with 18:00 hour--it lines up). The blue line is 'temperature' and orange is 'temperature1'. They approach but don't measure the same temperature during dunks. Presumably temperature1 is the cooler wet temperature. It rapidly cools from close to SST, to the wet bulb, hovering there with some 0.5 C wiggles.
+
+ 
+
+The dry bulb (blue) never levels off between dunks. Air temperature from Sentinel 2 is about 14 C at this time. Between each dunk, the dry temperature starts at 13 C and increases to 15-16 C until dunked again. I suspect it is radiatively warming. It looks like it might be drying for 5-10 min, then it radiatively warms a bit faster. This makes sense for a smooth sunny low-wind day. The warming depends on the wind.
+
+ 
+
+The wet bulb temperature at 14 C, 60 % RH (Sentinel 2) is 10 C. The wet bulb temperature measured is mostly a bit warmer than that. It may also be radiatively warming.
+
+ 
+
+ 
+
+I agree it would be good to dunk for long enough for both thermistors to measure the same ocean temperature.
+
+ 
+
+I can't answer the question of how long to wait between dunks, because we didn't reach an obvious equilibrium. T dry did exceed the air temperature. These observations would be qualitatively consistent with solar warming. Can we try it at night or low solar angle?
+
+ 
+
+-Simon
+
+From: de Szoeke, Simon <simon.deszoeke@oregonstate.edu>
+Sent: Wednesday, November 20, 2024 10:16 AM
+To: Alex Ekholm <aekholm@whoi.edu>; Emerson Hasbrouck <ehasbrouck@whoi.edu>; Steven Jayne <sjayne@whoi.edu>; tom farrar <tfarrar@whoi.edu>; Jason Smith <jsmith@whoi.edu>
+Subject: Re: [EXTERNAL] Re: Wet Bulb Humidity Field Test #1 data
+
+ 
+
+Awesome! I'll take look and try and answer Emerson's question about the drying time. -Simon
+
+From: Alex Ekholm <aekholm@whoi.edu>
+Sent: Wednesday, November 20, 2024 9:56 AM
+To: de Szoeke, Simon <simon.deszoeke@oregonstate.edu>; Emerson Hasbrouck <ehasbrouck@whoi.edu>; Steven Jayne <sjayne@whoi.edu>; tom farrar <tfarrar@whoi.edu>; Jason Smith <jsmith@whoi.edu>
+Subject: Re: [EXTERNAL] Re: Wet Bulb Humidity Field Test #1 data
+
+ 
+
+[This email originated from outside of OSU. Use caution with links and attachments.]
+
+Hi Simon,
+
+ 
+
+I've exported the data for you in NC and CSV. Please see attached.
+
+ 
+
+Alex
+
+ 
+
+On 2024-11-20 12:49, de Szoeke, Simon wrote:
+
+    Thanks, Emerson!
+
+     
+
+    Do any of you have a quick way to read rsk files?
+
+    Can you convert them to text, csv, netcdf, or mat; or provide me a minimal working example for doing so? I have not used pyRSK or matlab RSK, and it would take me some time to fiddle with it.
+
+     
+
+    -Simon
+
+    From: Emerson Hasbrouck <ehasbrouck@whoi.edu>
+    Sent: Tuesday, November 19, 2024 12:54 PM
+    To: Steven Jayne <sjayne@whoi.edu>; tom farrar <tfarrar@whoi.edu>; Alexander Ekholm <aekholm@whoi.edu>; Jason Smith <jsmith@whoi.edu>; de Szoeke, Simon <simon.deszoeke@oregonstate.edu>
+    Subject: Wet Bulb Humidity Field Test #1 data
+
+     
+
+    [This email originated from outside of OSU. Use caution with links and attachments.]
+
+    Hello All – Attached is the .rsk data set and notes for the first wet bulb field test. I dunked the instrument 4 times and allowed it to air dry for 20 minutes 2x and 10 minutes 2x. See images for instrument and float configuration.
+
+     
+
+    https://uop.whoi.edu/realtime/WFIP_Sentinel.html?buoy=2 – here is the ground truth met station for humidity and air temperature. Please note that wind is not valid as buoy was on it’s side during the wet bulb sample interval.
+
+     
+
+    Can someone please take a look at the data and tell me what is the shortest acceptable dry time between wettings. It looks like 2-3 minutes is sufficient dry time.
+
+     
+
+    I will be out on station servicing a mooring tomorrow and would like to conduct a repeat test. Please advise for best practices based on the initial data set.
+
+     
+
+    Cheers – Emerson
+
+     
+
+    ---------------------------
+
+    Emerson G. Hasbrouck
+
+     
+
+    Sr. Engineering Assistant
+
+    Upper Ocean Processes Group
+
+    Department of Physical Oceanography
+
+     
+
+    Woods Hole Oceanographic Institution
+
+    266 Woods Hole Rd.
+
+    183 Clark South – MS 30
+
+    Woods Hole, MA 02543
+
+     
+
+    O: 508.289.3277
+
+    C: 631.431.1251
+
+     
+
+-- 
+
+Alexander K. Ekholm
+
+Research Engineer, Float Group
+
+Department of Physical Oceanography
+
+Woods Hole Oceanographic Institution
+
+Woods Hole, MA, USA
+
+ 
+
+Office: 508-289-4930
+
+Mobile: 508-566-4370
+
+Attachments:
+233860_20241121_2006.nc	303 KB
+233860_20241121_2006.rsk	1.0 MB
+20241120_humidity-test-notes_EGH.txt	398 bytes
+IMG_4612.jpg	3.3 MB
