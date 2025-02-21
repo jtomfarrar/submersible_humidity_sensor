@@ -22,3 +22,7 @@ SHS test 20241120
 
 Emerson wrote:
 "The Sentinel Buoy that I co-located with was again Sentinel 2, however this time it was upright and deployed while I was making measurements with the SHS as can be seen in the attached image."
+
+The photo Emerson sent had 
+Lat = 40deg 36' 29.64'' N
+Lon = 70deg 47' 3.87'' W
