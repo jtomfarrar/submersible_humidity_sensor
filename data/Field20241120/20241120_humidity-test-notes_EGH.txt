@@ -1,11 +1,11 @@
-Humditiy sensor test 20241118
+20241120 - 
 
-17:17:43 - dunk/wet - but not turned on
-17:18:52 - unit turned on - fresh dunk/wet
-17:38:39 - dunk/wet
-17:58:13 - dunk/wet
-18:09:28 - dunk/wet
-18:20:53 - recovery (dunk on recovery)
+sunny, light and variable winds, seas .5m or less
+
+SHS test conducted at WFIP Station #5 with the Sentinel # 2 buoy system; SHS was deployed at Lat = 40deg 36' 29.64'' N
+Lon = 70deg 47' 3.87'' W
+
+
 
 SHS test 20241120
 
@@ -18,11 +18,3 @@ SHS test 20241120
 •	1653 dunk
 •	1659 dunk
 •	1706 dunk
-
-
-Emerson wrote:
-"The Sentinel Buoy that I co-located with was again Sentinel 2, however this time it was upright and deployed while I was making measurements with the SHS as can be seen in the attached image."
-
-The photo Emerson sent had 
-Lat = 40deg 36' 29.64'' N
-Lon = 70deg 47' 3.87'' W

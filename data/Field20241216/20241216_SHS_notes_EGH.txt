@@ -1,9 +1,11 @@
 20241216 - overcast. windy (10-15 knts) seas 1m+, water temp warmer than air temp
 
-closest WFIP Station is #5, occupied by Sentinel 6. 
-Location of test was directly adjacent to Sentinel 6 / WFIP Station 5: 41.15009, -71.18407  
+
+
+closest WFIP Station is #5, occupied by Sentinel 6. testing location ~ 41.15009N, -71.18407W  
 
 16:04z - start unit and begin at sea trial
 
 attempted to dunk temp probes every 2 minutes, but as wind blew ship off of floating SHS the tether line became taught and attempts to recover the probe or keep a consistent distance from vessel resulted in repeated water dunks at times of less than 2 minutes
+
 
