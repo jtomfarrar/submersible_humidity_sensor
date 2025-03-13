@@ -57,7 +57,7 @@ dqsdT(p,T) = ForwardDiff.derivative(t -> qs(p,t), T)
 # for approximating the evap process
 
 "General single Newton iteration to update x toward f(x) = fhat for a univariate function f"
-updatex(f, x, fhat) = x + (fhat-f(x)) / ForwardDiff.derivative(f, x)
+updatex(f, x, fhat=0) = x + (fhat-f(x)) / ForwardDiff.derivative(f, x)
 
 """
 Twet_autodiff(T[K], q[kg/kg], p[Pa]; niter=2) wet bulb temperature using Newton's method
