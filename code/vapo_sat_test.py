@@ -6,6 +6,7 @@ from vapo_sat import es, qs, dqsdT, LvK, Twet_autodiff, C, RdoRv, Cp
 import xarray as xr
 import numpy as np  # Regular numpy for data analysis (not for autodiff)
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 import pandas as pd
 
 # Set test dataset path
@@ -14,7 +15,7 @@ shs_test_file = f"../data/{test}/233860_20250227_2224.nc"
 
 # Open the dataset
 ds = xr.open_dataset(shs_test_file)
-
+# ds = ds.sel(time=slice(shs_start_time, shs_end_time))
 # Extract temperature data
 temp_C = ds['temperature'].values
 temp1_C = ds['temperature1'].values
@@ -111,7 +112,7 @@ print("\nTest 3: Expected RH vs. Calculated RH")
 # Create figure with multiple subplots
 fig, axes = plt.subplots(3, 1, figsize=(12, 10), sharex=True)
 
-subset = -1000  # To limit the number of points plotted for clarity
+subset = -16482  # To limit the number of points plotted for clarity
 
 # Plot temperatures
 axes[0].plot(time_pd[subset:], temp_C[subset:], 'r-', label='Temperature 1')
@@ -142,8 +143,10 @@ else:
     axes[2].set_title('Calculated RH (assuming T1=dry, T2=wet)')
 
 axes[2].set_xlabel('Time')
+axes[2].xaxis.set_major_formatter(mdates.DateFormatter('%H:%M'))
+fig.autofmt_xdate()
 plt.tight_layout()
-plt.savefig('temperature_rh_analysis.png', dpi=300)
+plt.savefig(f'../img/{test}/temperature_rh_analysis.png', dpi=300)
 plt.show()
 
 # %%
@@ -225,7 +228,7 @@ plt.xlabel('Dry Bulb Temperature (°C)')
 plt.ylabel('Wet Bulb Temperature (°C)')
 plt.title('Psychrometric Chart with Measured Data')
 plt.legend()
-plt.savefig('psychrometric_comparison.png', dpi=300)
+plt.savefig(f'../img/{test}psychrometric_comparison.png', dpi=300)
 plt.show()
 
 print("\nAnalysis complete!")

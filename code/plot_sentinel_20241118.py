@@ -10,6 +10,7 @@ import pandas as pd
 # set the directories
 test = "Field20241118"
 shs_test_file = f"../data/{test}/233860_20241118_1826.nc"
+# the real-time sentinel data file
 sentinel_data_file = f"../data/Sentinel/WFIP_Sentinel2.csv"
 datadir = f"../data/{test}"
 img_dir = f"../img/{test}"
@@ -18,17 +19,22 @@ shs_end_time = pd.to_datetime("2024-11-18T18:21:53")
 # Lat = 40deg 36' 29.64'' N
 # Lon = 70deg 47' 3.87'' W
 
+
 # closest WFIP Station is #5, occupied by Sentinel 6.
 lat_sentinel = 40 + 36/60 + 29.64/3600 # convert to decimal degrees
 lon_sentinel = -70 - 47/60 - 3.87/3600 # convert to decimal degrees
 
+# set plus and minus x hours to the start and end time
+time_offset = pd.Timedelta(hours=1)
+crop_start_time = shs_start_time - time_offset
+crop_end_time = shs_end_time + time_offset  # crop x hours before and after the SHS period
 # make the directories
 import os
 os.makedirs(img_dir, exist_ok=True)
 
 # %%
 ds = xr.open_dataset(shs_test_file)
-ds = ds.sel(time=slice(shs_start_time, shs_end_time))
+ds = ds.sel(time=slice(crop_start_time, crop_end_time))
 
 # %%
 ## plot variables
@@ -58,8 +64,8 @@ df = df.set_index('time')
 from datetime import timedelta
 # Define time range for plotting
 # Set a window several days wide to give context but center it on the SHS period
-days_before = 3  # Show 3 days before SHS starts
-days_after = 3   # Show 3 days after SHS ends
+days_before = 1  # Show 3 days before SHS starts
+days_after = 1   # Show 3 days after SHS ends
 
 # Calculate the window
 start_time = shs_start_time - timedelta(days=days_before)
@@ -201,14 +207,14 @@ plt.plot(ds.time, ds.temperature, label="temperature")
 plt.plot(ds.time, ds.temperature1, label="temperature 1")
 plt.plot(df.index, df['temperature_WXT'], label="air temperature WXT")
 plt.plot(df.index, df['temperature_HC2'], label="air temperature HC2")
-ax.set_title("Humditiy sensor test 11/20/2024", fontsize=16)   
+ax.set_title("Humditiy sensor test 11/18/2024", fontsize=16)   
 # Add footer
 shs_duration = (shs_end_time - shs_start_time).total_seconds() / 60  # in minutes
 # footer_text = f"Data period: {week_data.index.min().strftime('%Y-%m-%d %H:%M')} to {week_data.index.max().strftime('%Y-%m-%d %H:%M')}"
 footer_text = f"SHS Period: {shs_start_time.strftime('%Y-%m-%d %H:%M')} to {shs_end_time.strftime('%Y-%m-%d %H:%M')} (Duration: {shs_duration:.1f} min)"
 footer_text += f"\nclosest WFIP Station is #5, occupied by Sentinel 6. Lat: {lat_sentinel:.4f} Lon: {lon_sentinel:.4f}"
 fig.text(0.5, 0.01, footer_text, ha='center', fontsize=8, style='italic')
-plt.xlim(shs_start_time , shs_end_time )
+plt.xlim(crop_start_time , crop_end_time )
 plt.ylim(min_shs, max_shs)
 plt.xticks(rotation=45)
 plt.ylabel("Temperature (degree C)", fontsize=14)
@@ -218,6 +224,7 @@ plt.tight_layout(rect=[0, 0.02, 1, 0.96])  # Adjusted to make room for two-line 
 # plt.show()  # show the plot
 # save the plot
 plt.savefig(f"{img_dir}/temperature_{test}.png")
+
 # %%
 # plot key variables in a single figure
 
