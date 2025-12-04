@@ -2,7 +2,7 @@ June 13, 2025
 
 SPdeS comments Aug 18, 2025
 
-**Submersible humidity sensor testing protocol**
+# Submersible humidity sensor testing protocol
 
 Major issues from previous tests:
 
@@ -25,7 +25,7 @@ tests](https://docs.google.com/spreadsheets/d/1vdw-wr8KG5HfAMqWTgq3-DX9OUjbawgZ6
 **Dedicate a calibrated stand-alone ASIMET WXT to "live" with the SHS
 probe and be used to provide references for SHS tests.**
 
-**Revised protocol (06/13/2025):**
+## Revised protocol (06/13/2025):
 
 1.  Use an ASIMET WXT as a reference standard for humidity and
     temperature (and, if outside, at least note wind, sunlight,
@@ -52,7 +52,7 @@ probe and be used to provide references for SHS tests.**
 
 7.  Repeat (5) and (6) two more times
 
-**Data processing**
+## Data processing
 
 -   Produce a netcdf file from the SHS with distinguishable variable
     names and unique name for the test (e.g. the date).
