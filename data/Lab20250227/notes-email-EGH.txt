@@ -1,0 +1,25 @@
+Hello -
+
+Please see the attached data set for the ballast tank test of the SHS sensor.
+
+Timing is as follows:
+
+20250227 20:06z - turn on - leave in air
+20250227 20:15z - submerge probes in water
+20250227 20:25z - remove from water
+20250227 22:23z - turn off and download data
+
+There is a synthetic wick on T2.
+
+
+Cheers - Emerson
+
+---------------------------
+Emerson G. Hasbrouck
+
+WHOI
+Sr. Engineering Assistant
+Upper Ocean Processes Group
+Department of Physical Oceanography
+
+c:631.431.1251
