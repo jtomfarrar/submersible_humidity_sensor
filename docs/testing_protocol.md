@@ -72,13 +72,13 @@ It would be nice to exceed the "at least" times listed for the various transitio
 
 It is a good idea to do some tests to determine the equilibration times, to inform the times in the protocol, which are actually guesses at periods that exceed equilibration times.
 
--We know the sensors are equilibrated when they change little, and fluctuate about a stationary mean, for a long time. We can gain confidence in this by looking at long time series.
+- We know the sensors are equilibrated when they change little, and fluctuate about a stationary mean, for a long time. We can gain confidence in this by looking at long time series.
 
--The equilibration time is one of the first things we need in order to interpret the tests. Once we know the time scale, we can refine the times in the protocol and do more standard (probably shorter) tests.
+- The equilibration time is one of the first things we need in order to interpret the tests. Once we know the time scale, we can refine the times in the protocol and do more standard (probably shorter) tests.
 
--The fluctuations after the temperature has equilibrated to the mean are useful, as they tell us something about the turbulence, independent of the sensor adjustment.
+- The fluctuations after the temperature has equilibrated to the mean are useful, as they tell us something about the turbulence, independent of the sensor adjustment.
 
--It would also be useful to know how long the wet sensor stays wet, and what Twet does as the wick dries out. This could be done by running the last test overnight.
+- It would also be useful to know how long the wet sensor stays wet, and what Twet does as the wick dries out. This could be done by running the last test overnight.
 
 All these are benefits of doing some long tests. How long? We could try
 
