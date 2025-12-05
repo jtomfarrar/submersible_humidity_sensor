@@ -62,3 +62,27 @@ probe and be used to provide references for SHS tests.**
     -   NetCDF files can't have 2 record dimensions, so 2 files might be
         better able to accommodate the two separate time dimensions for
         the SHS and the WXT.
+
+## Preliminary tests with longer adjustment time periods
+
+### Tom Farrar wrote:
+It would be nice to exceed the "at least" times listed for the various transitions in this first run, especially the 2-min wet and 30-min dry times.  (This will let us understand what's really required in future runs.)  -Tom
+
+### de Szoeke, Simon wrote:
+
+It is a good idea to do some tests to determine the equilibration times, to inform the times in the protocol, which are actually guesses at periods that exceed equilibration times.
+
+-We know the sensors are equilibrated when they change little, and fluctuate about a stationary mean, for a long time. We can gain confidence in this by looking at long time series.
+
+-The equilibration time is one of the first things we need in order to interpret the tests. Once we know the time scale, we can refine the times in the protocol and do more standard (probably shorter) tests.
+
+-The fluctuations after the temperature has equilibrated to the mean are useful, as they tell us something about the turbulence, independent of the sensor adjustment.
+
+-It would also be useful to know how long the wet sensor stays wet, and what Twet does as the wick dries out. This could be done by running the last test overnight.
+
+All these are benefits of doing some long tests. How long? We could try
+
+5 min equilibration in water and 
+2 hours in air
+
+Ventilation will cut down on the time needed for sensor equilibration. I assume ambient ventilation "wind" will be measured by the WXT.
