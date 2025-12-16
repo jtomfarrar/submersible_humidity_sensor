@@ -1,0 +1,329 @@
+function stat = load_bin_module(sa_file,DATADIR,average_winds)
+% Load binary file from ASIMET SD module, decode, and save to .mat file
+% Upon successful processing of a file, load_bin_module() will return stat=1
+% This script is based upon compact flash decoders designed by N.Galbraith
+
+%% input fields:
+%--------------------------------------------------------------------------
+% infile - raw dat file eg 'VWX003_dock.dat'
+% outfile - destination matfile  eg 'VWXT003_v2.mat';
+% inst_type - type of SD module; bpr, hrh, lwr, prc, swr, or wnd
+% meta - whatever metadata you like.
+%     Recommended MINIMUM fields:
+%     meta.site = 'WHOTS8 burnin'; %'NTAS burnin';
+%     meta.deployment = '8';
+%     meta.start_year = 2011; %2010;
+% card type must be 'SD'
+%--------------------------------------------------------------------------
+
+%%  Modifications
+% 2018/02/06 bgreenwood; update N.Galbraith's ASIMET compact-flash code to work
+%   with the new SD card ASIMET modules. Move freads inside try/catch block,
+%   update meta-data, move A5A5 search code into locate_record_beginning function
+% 2010/08/12 ngalbraith; Seb Bigorre's idea, vtypes/vnames are now cells
+% 2010/07/14 ngalbraith; fixed sonic wind tilt (was uchar, is char)
+% 2003/08 Code by ngalbraith
+
+    meta.decoder.program = mfilename('fullpath');
+    meta.decoder.version = '2018/02/27';
+    meta.decoder.runtime = datestr(now);
+    meta.decoder.author = 'Benjamin Greenwood, bgreenwood@whoi.edu';
+    meta.UOP_group_website = 'uop.whoi.edu';
+    meta.instrument.website = 'uop.whoi.edu/UOPinstruments/frodo/asimet';
+    compass=[];
+    
+    infile = [sa_file '.DAT'];
+    outfile= [sa_file '.mat'];
+    
+    % Infer instrument type from filename
+    inst_type = lower(infile(1:3));
+
+    nvars=0;vnames=[];
+    switch lower(inst_type)
+        case  {'bpr'}
+            nbytes = 336;
+            vnames= {'bpr'};
+            numunused = 12;
+            meta.instrument.manufacturer='Heise';
+            meta.instrument.model='DXD';
+            meta.instrument.range ='850 to 1050 mbar';
+            meta.instrument.accuracy='UOP lab calibration, 0.2mbar, manufacturer, 0.02% F.S.';
+            meta.data.bpr.long_name='Barometric Pressure';
+            meta.data.bpr.unit='mbar';
+        case  {'hrh'}
+            vnames= {'hrh'; 'atmp'};
+            nbytes = 576;
+            numunused = 12;
+            meta.instrument.manufacturer='Rotronic';
+            meta.instrument.model='MP-101A';
+            meta.instrument.range='0 to 100 %RH -40 to +60 degC';
+            meta.instrument.accuracy='UOP lab calibration 1 %RH, 0.05degC';
+            meta.data.hrh.long_name='Relative humidity';
+            meta.data.hrh.unit='%RH';
+            meta.data.atmp.long_name='Air Temperature';
+            meta.data.atmp.unit='degC';
+        case  {'lwr'}
+            vnames = {'dome'; 'body'; 'tpile'; 'lwr'};
+            nbytes = 992;
+            numunused = 8;
+            meta.instrument.manufacturer='Eppley Precision';
+            meta.instrument.model='Precision Infrared Radiometer (PIR)';
+            meta.instrument.range='0 to 700 W/m^2';
+            meta.instrument.resolution='0.1 W/m^2';
+            meta.instrument.accuracy='2 W/m^2 (Colbo & Weller,2008)';
+            meta.data.lwr.long_name='longwave radiation flux';
+            meta.data.lwr.unit='W/m^2';                
+            meta.data.dome.long_name='Dome Temperature';
+            meta.data.dome.unit='K';
+            meta.data.body.long_name='Body Temperature';
+            meta.data.body.unit='K';
+            meta.data.tpile.long_name='Thermopile voltage';
+            meta.data.tpile.unit='volts';
+        case  {'prc'}
+            vnames= {'precip'};
+            nbytes = 336;
+            numunused = 12;
+            meta.instrument.manufacturer='RM Young';
+            meta.instrument.model='50202 Self-siphoning rain gauge';
+            meta.instrument.range='0 to 50mm';
+            meta.instrument.resolution='0.1mm';
+            meta.instrument.accuracy='UOP lab calibration 1mm/hr(Serra et al.,2001)';
+            meta.data.precip.long_name='Rain Accumulation';
+            meta.data.precip.unit='mm';
+        case {'swr'}
+            vnames= {'swr' };
+            nbytes = 336;
+            numunused = 12;
+            meta.instrument.manufacturer='Eppley';
+            meta.instrument.model='Precision Spectral Pyranometer (PSP)';
+            meta.instrument.range='0 to 2800 W/m^2';
+            meta.instrument.resolution='0.1 W/m^2';
+            meta.instrument.accuracy='2 W/m^2(Colbo & Weller,2008)';
+            meta.data.swr.long_name='short wave radiation flux';
+            meta.data.swr.unit='W/m^2';
+        case {'wnd'}
+            vnames = {'wnde';'wndn';'wspd';'wspd_max';'vane';'compass';'tiltx';'tilty'};
+            vtypes = {'int16';'int16';'uint8';'uint8';'uint16';'uint16';'int8';'int8'};
+            vscale = [0.01,0.01,0.2,0.2,0.1,0.1,0.2,0.2];
+            nbytes = 816;
+            numunused = 12;
+            meta.instrument.manufacturer='RM Young';
+            meta.instrument.model='5103 Wind monitor';
+            meta.instrument.range='0 to 60m/s(wind speed), 0 to 360 deg(direction)';
+            meta.instrument.resolution='0.01m/s, 0.1deg';
+            meta.instrument.accuracy='UOP lab calibration 1%(wind speed), 3 degrees(direction)';
+            meta.data.wspd.long_name='Wind Speed';
+            meta.data.wspd.methodology='Scalar averaged wind speed over one minute, 8bit resolution';
+            meta.data.wspd.units='m/s';
+            meta.data.wnde.long_name='Wind East';
+            meta.data.wnde.units='m/s';
+            meta.data.wndn.long_name='Wind North';
+            meta.data.wndn.units='m/s';
+            meta.data.wspd_max.long_name='the maximum 5 second averaged Wind Speed for the minute, 8bit resolution';
+            meta.data.wspd_max.units='m/s';
+            meta.data.compass.long_name='vector average of 11 (5 second average) compass measurements for each minute';
+            meta.data.compass.units='degree';
+            meta.data.tilt_x.long_name='the average (of 11 samples) Tilt X for the minute';
+            meta.data.tilt_x.units='degree';
+            meta.data.tilt_y.long_name='the average (of 11 samples) Tilt Y for the minute';
+            meta.data.tilt_y.units='degree';
+            meta.data.vane.long_name='vane direction';
+            meta.data.vane.methodology='last vane direction for the minute';
+            meta.data.vane.units='degree';
+        case {'asg'}
+            vnames = {'wnde';'wndn';'wspd';'wspd_max';'vane';'compass';'tiltx';'tilty';'sos';'gill_temp'};
+            vtypes = {'int16';'int16';'uint8';'uint8';'uint16';'uint16';'int8';'int8';'float';'float'};
+            vscale = [0.01,0.01,0.2,0.2,0.1,0.1,0.2,0.2,1,1];
+            nbytes = 1296;
+            numunused = 12;
+            meta.instrument.manufacturer='RM Young';
+            meta.instrument.model='5103 Wind monitor';
+            meta.instrument.range='0 to 60m/s(wind speed), 0 to 360 deg(direction)';
+            meta.instrument.resolution='0.01m/s, 0.1deg';
+            meta.instrument.accuracy='UOP lab calibration 1%(wind speed), 3 degrees(direction)';
+            meta.data.wspd.long_name='Wind Speed';
+            meta.data.wspd.methodology='Scalar averaged wind speed over one minute, 8bit resolution';
+            meta.data.wspd.units='m/s';
+            meta.data.wnde.long_name='Wind East';
+            meta.data.wnde.units='m/s';
+            meta.data.wndn.long_name='Wind North';
+            meta.data.wndn.units='m/s';
+            meta.data.wspd_max.long_name='the maximum 5 second averaged Wind Speed for the minute, 8bit resolution';
+            meta.data.wspd_max.units='m/s';
+            meta.data.compass.long_name='vector average of 11 (5 second average) compass measurements for each minute';
+            meta.data.compass.units='degree';
+            meta.data.tilt_x.long_name='the average (of 11 samples) Tilt X for the minute';
+            meta.data.tilt_x.units='degree';
+            meta.data.tilt_y.long_name='the average (of 11 samples) Tilt Y for the minute';
+            meta.data.tilt_y.units='degree';
+            meta.data.vane.long_name='vane direction';
+            meta.data.vane.methodology='last vane direction for the minute';
+            meta.data.vane.units='degree';
+
+        otherwise
+            disp('Unknown inst_type');
+            disp('fatal error. type ''dbquit'' and try again');
+            dbkeyboard
+    end
+
+    %% Open the file
+    % 'ieee-be' or 'b' IEEE floating point with big-endian byte ordering
+    % 'ieee-le' or 'l' IEEE floating point with little-endian byte ordering
+    infid=fopen(infile,'rb','l');
+    used = 165;
+    
+    % bgreenwood estimate # records and pre-allocate space for data
+    file = dir(infile);
+    nhours = ceil(file.bytes / nbytes);
+    fprintf('Using file-size (%d bytes) to estimate the number of records: %d\n',file.bytes,nhours);
+    
+    locate_record_beginning(infid,used,nbytes);
+    
+    % Pre-allocate space for data
+    mday = ones(nhours*60,1)*NaN;
+    for v = 1:length(vnames)
+        eval([vnames{v} '=ones(nhours*60,1)*NaN;']);
+    end
+    v3_3 = ones(nhours*60,1)*NaN;
+    vbat = ones(nhours*60,1)*NaN;
+    board_temp = ones(nhours*60,1)*NaN;
+    ver  = repmat(' ',[nhours*60 24]);
+    bver = repmat(' ',[nhours*60 16]);
+    modsn = repmat(' ',[nhours*60 4]);
+    sensn = repmat(' ',[nhours*60 8]);
+    crc = ones(nhours*60,2)*NaN;
+    
+    for irec = 1:nhours
+        try
+            time = fread(infid,6,'uint8');  % First 8 bytes contain date-stamp
+            year = fread(infid,1,'uint16'); % sec(uchar),min(uchar),hour(uchar),day(uchar),dow(not used),month(uchar),year(uint16)
+            hstamp = datenum(year,time(6),time(5),time(3),time(2),time(1)); % hour stamp
+            %fprintf('%s\n',datestr(hstamp));
+            if ~strcmp(inst_type,'lwr')     % all modules have this field except lwr
+                fread(infid,6,'uint8');     % record byte-size (ASCII) 
+                fread(infid,1,'uint16');    % record byte-size (uint16)
+            end
+            
+            % unpack hourly data
+            imin = (irec-1)*60+1; % index of minute
+            mday(imin:imin+59) = hstamp-(59:-1:0)/24/60; % date-stamp references previous 60 minutes of data
+            for v = 1:length(vnames)
+                if strcmp(inst_type,'wnd') || strcmp(inst_type,'asg') % wind values have different data types and must be scaled
+                    eval([vnames{v} '(imin:imin+59)=fread(infid,60,vtypes{v})*vscale(v);']);
+                else % all modules except wnd use floats and require no scaling
+                    eval([vnames{v} '(imin:imin+59)=fread(infid,60,''float'');']);
+                end
+            end
+            B = fread(infid,3,'float');
+            v3_3(imin:imin+59) = B(1)*ones(60,1);       % 3.3 VDC rail 10bit A/D values
+            vbat(imin:imin+59) = B(2)*ones(60,1);       % 12v incoming power to module 10bit A/D
+            board_temp(imin:imin+59) = B(3)*ones(60,1); % board mounted temperature sensor(degC) 10bit A/D
+            
+            if ~strcmp(inst_type,'lwr')
+                S = fread(infid,52,'uint8'); % read 52 characters including firmware description and serial numbers
+                ver(imin:imin+59,1:24) =  repmat(S(1:24)',60,1);
+                bver(imin:imin+59,1:16) = repmat(S(25:40)',60,1);
+                modsn(imin:imin+59,1:4) = repmat(S(41:44)',60,1);
+                sensn(imin:imin+59,1:8) = repmat(S(45:52)',60,1);
+            end
+            
+            uu=fread(infid,numunused,'uint8');
+            CRC(irec,1:2) = fread(infid,2,'uint8');
+            if CRC(irec,1) ~= used | CRC(irec,2) ~= used
+               throw(MException('MATLAB:mycode','CRC_checksum_fail'));
+            end
+            fread(infid,2,'uint8');
+            
+        catch ME
+            if feof(infid)
+                fprintf('EOF after record # %d, byte %d\n',irec-1,ftell(infid));
+                break;
+            elseif strcmp(ME.message,'CRC_checksum_fail')
+                fprintf('Bad checksum; record #%d, ending byte %0d\n',irec,ftell(infid));
+                fprintf('line #%d: %s\n',ME.stack(1).line,ME.message);
+                locate_record_beginning(infid,used,nbytes);
+            else
+                fprintf('Unknown exception, error reading record #%d, byte %d\n',irec,ftell(infid));
+                fprintf('line #%d: %s\n',ME.stack(1).line,ME.message);
+                keyboard;
+            end
+        end
+    end
+    fclose(infid);
+
+    fprintf('Read %d hourly records, %d minutes of data.\n',length(mday)/60,length(mday));
+    % generate yearday, using year of first record
+    if length(mday) > 1
+        [stdv]=datevec(mday(1));
+        styr=stdv(1);
+        yday = mday - datenum(styr,1,0);
+    end
+    
+    fprintf('Throughput report\n');
+    interval=[ mday(1) ];
+    meta.record_intervals=[];
+    for i = 2:length(mday)
+        if mday(i)-mday(i-1) > (2/24/60)
+            fprintf('Interval %s to %s\n',datestr(interval(end)),datestr(mday(i-1)));
+            meta.record_intervals=[ meta.record_intervals ; [ interval(end) mday(i-1) ] ];
+            interval = [interval mday(i)];
+        end
+    end
+    fprintf('Interval %s to %s\n',datestr(interval(end)),datestr(mday(i)));
+    meta.record_intervals=[ meta.record_intervals ; [ interval(end) mday(i-1) ] ];
+    
+    meta.instrument.software_vers=char(ver(1,:));   % Firmware version string extracted in raw binary
+    meta.instrument.software_brd=char(bver(1,:));   % Board version string extracted from raw binary
+    meta.instrument.model_sn=char(modsn(1,:));      % Module serial number
+    meta.instrument.sensor_sn=char(sensn(1,:));     % Sensor serial number
+    meta.decode_date=datestr(now,'yyyy-mm-dd');
+    meta.infile  = [pwd '/' infile];
+    meta.outfile = [pwd '/' outfile];
+    meta.data.v3_3.long_name='3.3 VDC rail 10bit A/D values';
+    meta.data.v3_3.unit='Volts';
+    meta.data.vbat.long_name='12v incoming power to module 10bit A/D';
+    meta.data.vbat.unit='Volts';
+    meta.data.board_temp.long_name='board mounted temperature sensor 10bit A/D';
+    meta.data.board_temp.unit='degC';
+    myvars={'meta','mday','v3_3','vbat','board_temp'};
+    
+    %% Conditionally average winds
+    averaged_vars={};
+    if (average_winds & strcmp(inst_type,'wnd'))
+        [mday_avg,wnde_avg]=savg(mday,wnde,average_winds);
+        [mday_avg,wndn_avg]=savg(mday,wndn,average_winds);
+        [mday_avg,wspd_avg]=savg(mday,wspd,average_winds);
+        [mday_avg,vane_avg]=davg(mday,vane,average_winds);
+        [mday_avg,compass_avg]=davg(mday,compass,average_winds);
+        averaged_vars={'mday_avg','wnde_avg','wndn_avg','wspd_avg','vane_avg','compass_avg'};
+    end
+    
+    try
+        fprintf('Saving variables to: %s\n',outfile);
+        save([DATADIR 'processed/' outfile],vnames{:},myvars{:},averaged_vars{:});
+        copyfile(infile,DATADIR);
+    catch save_error
+        fprintf('Save error, line #%d: %s\n',save_error.stack(1).line,save_error.message);
+        %rethrow(save_error);
+        keyboard
+    end
+    stat=1;
+end
+
+function locate_record_beginning(infid,used,nbytes)
+    for nbskp=1:100000
+        % not unused 'count' variable message suppressed, to keep this code
+        % viable for older versions of Matlab NRG 20140911
+        [A1,count]=fread(infid,1,'uint8'); %#ok<*NASGU>
+        if  A1 == used
+            %fprintf('A1 at %d\n',ftell(infid)-1);
+            [A2,count]=fread(infid,1,'uint8');
+            if  A2 == used
+                %fprintf('A2 at %d\n',ftell(infid)-1);
+                break;
+            end
+        end
+    end
+    fseek(infid,-nbytes+2,'cof'); % bgreenwood; move file position to beginning of record
+    fprintf('Next record begins at byte %d \n', ftell(infid));
+end

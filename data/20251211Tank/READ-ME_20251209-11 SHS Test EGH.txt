@@ -1,0 +1,7 @@
+20251209-11 SHS Test EGH:
+
+timing notes: 20251209_testing_protocol_EGH
+WXT data (met data): folder-20251208_SHS-test_EGH_WXT; "processed" folder; data file- ASWXT203.mat 
+RBR data: folder-20251208_SHS-test_EGH_RBR; file-233860_20251211_1631_data.txt  
+tank temp: folder-20251208_SHS-test_EGH_tank-temp; file 20251208 was unfortunately paused while the probe was in the tank, I have recorded values for both before and after; file 20251209 has complete data for duration test was run.  
+
