@@ -18,6 +18,7 @@ RdoRv=Rd/Rv
 
 "latent heat of water vapor"
 LvK(TempK) = L0 + (Cpv-Cw) * (TempK-273.0)
+LvC(TempC) = L0 + (Cpv-Cw) *  TempC
 
 # functions
 """
