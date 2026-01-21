@@ -2,7 +2,7 @@ module VaporSat
 
 using ForwardDiff
 
-export qs, dqsdT
+export qs, dqsdT, qa_wb
 export Twet_autodiff
 
 # constants
@@ -56,6 +56,10 @@ dqsdT(p,T) = ForwardDiff.derivative(t -> qs(p,t), T)
 
 # wet bulb temperature methods
 # for approximating the evap process
+
+"specific humidity from temperature and wet bulb temperature [K]"
+qa_wb(T,Tw, p=1e5) = qs(p, Tw - C) - Cp*(T - Tw) / LvK((T + Tw)/2)
+
 
 "General single Newton iteration to update x toward f(x) = fhat for a univariate function f"
 updatex(f, x, fhat=0) = x + (fhat-f(x)) / ForwardDiff.derivative(f, x)
