@@ -92,3 +92,6 @@ plots/
 # Mypy cache
 .mypy_cache/
 Manifest.toml
+
+# julia conda pkg manager
+.CondaPkg/
