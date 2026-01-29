@@ -1,0 +1,33 @@
+2026-01-21 - SHS test
+
+RBR sensor - 2Hz
+WXT - 1HZ
+CTD in tank - 1 Hz
+
+WHOI - Clark South ballast tank
+
+T/C log of tank: 20260121_SHS_tank-temp
+Wind/AT: ASWXT203.mat (in WXT folder)
+IMG_6781.jpeg - picture of fan, SHS, WXT set up
+
+16:32z - RBR sensor turned on
+16:33z - probe submerged in tank
+16:35z - removed from tank and placed in front of shop fan - WXT mounted next to SHS to measure wind speed
+18:48:30z - submerged in tank
+18:50:30z - removed from tank and placed in front of fan
+21:08:15z - submerged in tank
+21:10:20z - removed from tank and placed in front of fan - will leave overnight and restart in the morning
+
+20260122
+
+13:48:40z - sensor submerged
+13:50:40 - removed from tank and put in front of fan
+15:57:30 - in the tank - but not logging
+16:00:00 - out in front of fan
+16:05:45 - in the water - temp logging
+16:07:45 - out in front of fan - tank logging stopped
+17:51:45 - in water - not logging
+17:53:45 - out of water
+17:55:35 - in water - logging
+17:57:35z - out of water in front of fan
+19:36z - experiment ended
