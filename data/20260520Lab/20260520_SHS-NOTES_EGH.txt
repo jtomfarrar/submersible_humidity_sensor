@@ -1,0 +1,27 @@
+2026-05-20 - SHS test
+
+RBR sensor - 3 seconds
+WXT - 1HZ
+CTD in tank - 1 Hz
+
+WHOI - Clark South ballast tank
+
+T/C log of tank: 20260520_CT_tank_log_EGH
+Wind/AT: ASWXT102.dat (in WXT folder)
+IMG_7344.jpeg - picture wick
+IMG_7345.jpeg, IMG_7346.jpeg - picture of fan, WXT and RBR setup
+
+14:15z - start RBR, WXT already started GPCTD in ballast tank already started logging
+14:26z - SHS sensor in the water (IN)
+14:33z - fan on (note in wxt data)
+14:33z - SHS sensor out of the water (OUT)
+15:07z - IN
+15:18 - OUT
+15:48 - IN
+15:53 - OUT
+17:02 - IN
+17:08 - OUT
+19:18 - IN
+19:25 - OUT
+20:59 - OFF 
+

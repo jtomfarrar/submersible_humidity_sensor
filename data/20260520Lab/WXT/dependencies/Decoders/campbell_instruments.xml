@@ -1,0 +1,133 @@
+<root>
+    <CR1000X>
+      <supply_voltage>10..18 VDC</supply_voltage>
+      <load>1..50mA</load>
+      <note>Internal lithium battery: AA,2.4AHr,3.6VDC</note>
+      <variables>mday,RECORD,posix,temp_CR1000x</variables>
+    </CR1000X>
+    <SDM-SIO4A>
+      <fullname>Campbell SDM-SIO4A Serial I/O Expander</fullname>
+      <notes>Connects up to 4 RS232 RS485 RS432 devices. SDM interface requires CR1000x ports C1,C2,C3. Tx buffer 767 bytes, Rx buffer 6143 bytes</notes>
+      <supply_voltage>7..30VDC</supply_voltage>
+      <load>10mA</load>
+    </SDM-SIO4A>
+    <Rotronic_HC2>
+      <manufacturer>Rotronic</manufacturer>
+	  <fullname>Rotronic Hygroclip 2 Humidity Temperature Probe</fullname>
+	  <range>0..100 %RH, -50..100 degC</range>
+      <accuracy>0.8 %RH, 0.1 degC (over 10..30 degC range)</accuracy>
+      <protocol>Two analog voltage measurements</protocol>
+      <supply_voltage>3.3..5.0VDC</supply_voltage>
+      <load>4.5mA</load>
+      <variables>atmp,hrh</variables>
+    </Rotronic_HC2>
+    <PTB210>
+      <manufacturer>Vaisala</manufacturer>
+      <range>500..1100mbar</range>
+      <accuracy>0.15mbar @ 20 degC</accuracy>
+      <response_time>1 second</response_time>
+      <resolution>0.01 mbar</resolution>
+      <protocol>RS232 7E1 9600 BAUD polled ASCII, RS485 8N1 9600 BAUD polled ASCII</protocol>
+      <supply_voltage>8-18VDC</supply_voltage>
+      <load>15mA active, 0.2mA shutdown</load>
+      <variables>bpr</variables>
+    </PTB210>
+    <CH200>
+      <fullname>Campbell CH200 Charging Voltage Regulator</fullname>
+	  <load>3mA</load>
+      <protocol>SDI-12</protocol>
+      <variables>BATT,temp_CH200</variables>
+    </CH200>
+    <RM_Young_32500>
+	  <manufacturer>RM Young</manufacturer>
+	  <range>0..360 degrees</range>
+      <resolution>0.5 degrees</resolution>
+      <accuracy>2 degrees (RMS)</accuracy>
+      <protocol>RS232 9600 baud 8N1 Polled ASCII</protocol>
+      <supply_voltage>11-30VDC</supply_voltage>
+      <load>40mA</load>
+      <variables>compass</variables>
+    </RM_Young_32500>
+    <RM_Young_05106>
+      <fullname>RM Young Wind Monitor Sensor</fullname>
+	  <manufacturer>RM Young</manufacturer>
+      <range>0..100m/s wind speed, 0..360 degrees wind direction</range>
+      <resolution></resolution>
+      <accuracy></accuracy>
+      <protocol>Two analog voltages measurements interfaced with RM Young 32500</protocol>
+      <supply_voltage></supply_voltage>
+      <load></load>
+      <notes>Raw propeller count conversion 1 m/s= 0.00490 * count</notes>
+      <variables>wdir,wnde,wndn,wspd,wspd_min,wspd_max,vane</variables>
+    </RM_Young_05106>
+    <RM_Young_50202>
+      <fullname>RM Young Precipitation Gauge</fullname>
+	  <manufacturer>RM Young</manufacturer>
+      <range>0..50 mm</range>
+      <accuracy>1 mm</accuracy>
+      <resolution></resolution>
+      <protocol>Analog voltage measurement</protocol>
+      <supply_voltage>8..30VDC</supply_voltage>
+      <load>3mA</load>
+      <notes>Not heated, conversion: 100mV = 1mm</notes>
+      <variables>precip</variables>
+    </RM_Young_50202>
+    <SMP21>
+	  <longname>SMP21-V Pyranometer</longname>
+	  <manufacturer>Kipp and Zonen</manufacturer>
+      <range>-400..4000 W/m2, 285..2800nm</range>
+	  <protocol>RS-485 Modbus (address 21), half duplex, 19200 BAUD, 8E1</protocol>
+      <supply_voltage></supply_voltage>
+	  <load>4mA</load>
+      <variables>swr_volts,swr_btemp,swr,swr2</variables>
+	</SMP21>
+	<SGR4>
+	  <longname>SGR4-V Pyrgeometer</longname>
+	  <manufacturer>Kipp and Zonen</manufacturer>
+	  <range>0..1000 W/m2, 4.5..42.0 um wavelength</range>
+	  <protocol>RS-485 Modbus (address 4), half duplex, 19200 BAUD, 8E1</protocol>
+	  <supply_voltage>5..30VDC</supply_voltage>
+	  <load>4.5mA</load>
+      <variables>lwr,lwr_volts,lwr_btemp</variables>
+    </SGR4>
+    <Taoglas_9602>
+	  <longname>STS.01.A.0115FB Integrated Iridium 9602 Transceiver</longname>
+      <manufacturer>Taoglas</manufacturer>
+	  <supply_voltage>8..32 VDC</supply_voltage>
+	  <load>1.0A peak, 125mA transmit, 125mA idle, 7.5mA radio off mode</load>
+      <protocol>RS-232, 19200 BAUD 8N1</protocol>
+    </Taoglas_9602>
+    <SBE37>
+      <longname>SBE37-SM MicroCAT high accuracy conductivity and temperature recorder</longname>
+      <manufacturer>Sea-Bird Scientific</manufacturer>
+      <website>www.seabird.com</website>
+	  <accuracy>0.002 degC, 0.0003 S/m</accuracy>
+      <resolution>0.0001 degC, 0.00001 S/m</resolution>
+      <range>-5..45 degC, 0..7 S/m</range>
+      <supply_voltage>9..24VDC</supply_voltage>
+      <load>9mA acquisition, 5mA communicating, 30uA quiescent</load>
+      <protocol>RS-232, 9600 BAUD 8N1</protocol>
+      <variables>sst,cond</variables>
+    </SBE37>
+    <Garmin_16HVS>
+      <longname>Garmin 16-HVS GPS Receiver</longname>
+      <manufacturer>Garmin</manufacturer>
+      <website>https://www.garmin.com/en-US/</website>
+      <accuracy>less than 15m at 95% confidence</accuracy>
+      <sensitivity>-165dbW minimum</sensitivity>
+      <supply_voltage>6..40VDC</supply_voltage>
+      <load>65mA @ 12VDC</load>
+      <protocol>RS232 38400 BAUD 8N1, NMEA $GPGGA string</protocol>
+      <variables>LAT,LON,gps_time</variables>
+    </Garmin_16HVS>
+    <ClimaVue50>
+        <longname>ClimaVue50 Compact Digital Weather Sensor</longname>
+        <manufacturer>Campbell Scientific</manufacturer>
+        <website>https://www.campbellsci.com/climavue-50</website>
+        <supply_voltage>3.6..15VDC</supply_voltage>
+        <load>1mA average</load>
+        <protocol>SDI-12</protocol>
+        <accuracy>0.6degC, 3%RH, 1mbar, 0.3 m/s, 5 deg(wdir), 5% W/m2, 5%(prc)</accuracy>
+        <resolution>0.1degC, 0.1%RH, 0.1mbar, 0.01 m/s, 1deg(wdir), 1 W/m2, 0.017mm</resolution>
+    </ClimaVue50>
+</root>
