@@ -1,17 +1,16 @@
-"""Compare 2026-05-20 SHS lab-test psychrometric quantities against
-independent in-tank Seabird GPCTD temperature.
+"""Compare 2026-05-20 SHS lab-test temperatures against the independent
+in-tank Seabird GPCTD reference.
 
-Available independent references for this test:
-  - data/20260520Lab/WXT/ASWXT102.DAT (Vaisala WXT520-SD): the PTU channel
-    (air T / RH / pressure) logged all zeros, so the WXT cannot serve as the
-    intended humidity reference. We report that and ignore it.
-  - data/20260520Lab/tank/20260520_CT_tank_log_EGH (Seabird GPCTD, 1 Hz):
-    independent tank water-temperature reference. While the SHS is in the
-    tank, both T_dry and T_wet should track this.
+The Vaisala WXT520 file (data/20260520Lab/WXT/ASWXT102.DAT) was checked
+separately and its PTU channel decoded to all zeros, so it is not used here.
+
+Inputs:
+  - data/20260520Lab/RBR/psychrometrics_20260520.csv (SHS psychrometric output)
+  - data/20260520Lab/tank/20260520_CT_tank_log_EGH    (Seabird GPCTD, 1 Hz)
 
 Outputs:
   - data/20260520Lab/compare_SHS_tank_20260520.csv
-  - img/Lab20260520_SHS_vs_tank.png
+  - img/Lab20260520/Lab20260520_SHS_vs_tank.png
 """
 from __future__ import annotations
 
@@ -24,7 +23,6 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 
 from vapo_sat_Lab20260520 import NOTES, DAY
-from decode_wxt520_sd import decode_wxt520
 
 
 # in-water windows from the notes (start IN -> next OUT)
@@ -65,20 +63,12 @@ def main():
     here = Path(__file__).resolve().parent
     root = here / ".."
     shs_csv = root / "data/20260520Lab/RBR/psychrometrics_20260520.csv"
-    wxt_dat = root / "data/20260520Lab/WXT/ASWXT102.DAT"
     ct_log = root / "data/20260520Lab/tank/20260520_CT_tank_log_EGH"
-    img_dir = root / "img"
-    img_dir.mkdir(exist_ok=True)
+    img_dir = root / "img/Lab20260520"
+    img_dir.mkdir(parents=True, exist_ok=True)
 
     shs = pd.read_csv(shs_csv, parse_dates=["time"]).set_index("time")
     print(f"SHS psychrometric samples : {len(shs)}")
-
-    wxt, _ = decode_wxt520(wxt_dat)
-    n_ptu_nonzero = int(((wxt["atmp"] != 0) | (wxt["hrh"] != 0)
-                         | (wxt["bpr"] != 0)).sum())
-    print(f"WXT records              : {len(wxt)}, "
-          f"PTU non-zero rows = {n_ptu_nonzero}  "
-          f"({'PTU OK' if n_ptu_nonzero else 'PTU unusable — all zeros'})")
 
     ct = load_tank_ct(ct_log)
     print(f"Tank GPCTD samples       : {len(ct)} "
@@ -129,8 +119,7 @@ def main():
     axs[0].legend(loc="lower right", fontsize=8)
     axs[0].grid(alpha=0.4)
     axs[0].set_title(
-        "SHS lab test 2026-05-20 — comparison against in-tank GPCTD "
-        "(WXT PTU was zeroed and not used)"
+        "SHS lab test 2026-05-20 — comparison against in-tank GPCTD"
     )
 
     # ΔT (SHS − tank) only during in-water windows

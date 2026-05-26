@@ -78,8 +78,8 @@ NOTES = [
 def main():
     here = Path(__file__).resolve().parent
     rbr_nc = here / "../data/20260520Lab/RBR/233860_20260521_1807.nc"
-    img_dir = here / "../img"
-    img_dir.mkdir(exist_ok=True)
+    img_dir = here / "../img/Lab20260520"
+    img_dir.mkdir(parents=True, exist_ok=True)
 
     ds = xr.open_dataset(rbr_nc)
     t_pd = pd.to_datetime(ds["time"].values)
