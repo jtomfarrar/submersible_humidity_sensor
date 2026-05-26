@@ -1,12 +1,18 @@
 """Compare 2026-05-20 SHS lab-test temperatures against the independent
-in-tank Seabird GPCTD reference.
+in-tank Seabird GPCTD reference, with a diagnostic panel showing the WXT520
+compass / tilt channels.
 
-The Vaisala WXT520 file (data/20260520Lab/WXT/ASWXT102.DAT) was checked
-separately and its PTU channel decoded to all zeros, so it is not used here.
+The Vaisala WXT520 PTU sensor (air T / RH / pressure) was not reporting
+for this test — both the UOP MATLAB-processed CSV and our Python decoder
+show atmp = hrh = bpr = 0 for every record. Only compass and tilt are valid.
+So the WXT cannot serve as a humidity reference here; we plot the compass
+and tilt as proof-of-life and call out the dead PTU channel.
 
 Inputs:
-  - data/20260520Lab/RBR/psychrometrics_20260520.csv (SHS psychrometric output)
-  - data/20260520Lab/tank/20260520_CT_tank_log_EGH    (Seabird GPCTD, 1 Hz)
+  - data/20260520Lab/RBR/psychrometrics_20260520.csv  (SHS psychrometric output)
+  - data/20260520Lab/tank/20260520_CT_tank_log_EGH     (Seabird GPCTD, 1 Hz)
+  - data/20260520Lab/WXT/20260521_SHS-test_EGH/processed/ASWXT102.csv
+      (official UOP-decoded WXT520 output)
 
 Outputs:
   - data/20260520Lab/compare_SHS_tank_20260520.csv
@@ -64,6 +70,8 @@ def main():
     root = here / ".."
     shs_csv = root / "data/20260520Lab/RBR/psychrometrics_20260520.csv"
     ct_log = root / "data/20260520Lab/tank/20260520_CT_tank_log_EGH"
+    wxt_csv = (root / "data/20260520Lab/WXT/20260521_SHS-test_EGH/"
+               "processed/ASWXT102.csv")
     img_dir = root / "img/Lab20260520"
     img_dir.mkdir(parents=True, exist_ok=True)
 
@@ -74,6 +82,12 @@ def main():
     print(f"Tank GPCTD samples       : {len(ct)} "
           f"({ct.index.min()} → {ct.index.max()})")
     ct3 = ct["T_C"].resample("3s").mean()
+
+    wxt = pd.read_csv(wxt_csv, parse_dates=["time"]).set_index("time")
+    ptu_dead = bool((wxt[["atmp", "hrh", "bpr"]].abs().sum().sum()) == 0)
+    print(f"WXT520 records           : {len(wxt)} "
+          f"({wxt.index.min()} → {wxt.index.max()})  "
+          f"{'PTU sensor not reporting (atmp=hrh=bpr=0)' if ptu_dead else 'PTU OK'}")
 
     # --- per-in-water-interval comparison -----------------------------
     print("\nWhile SHS is in the tank (independent T reference = GPCTD):")
@@ -107,7 +121,8 @@ def main():
     print(f"\nwrote {out_csv}")
 
     # --- plot ---------------------------------------------------------
-    fig, axs = plt.subplots(2, 1, figsize=(11, 8), sharex=True)
+    fig, axs = plt.subplots(3, 1, figsize=(11, 10), sharex=True,
+                            gridspec_kw={"height_ratios": [3, 2, 2]})
 
     axs[0].plot(shs.index, shs["T_dry_C"], lw=0.7, color="C0",
                 label="SHS T_dry (RBR)")
@@ -141,6 +156,28 @@ def main():
     axs[1].set_ylabel("ΔT (°C)")
     axs[1].legend(loc="upper right", fontsize=8)
     axs[1].grid(alpha=0.4)
+
+    # WXT diagnostic panel (compass / tilt only — PTU was dead)
+    ax2 = axs[2]
+    ax2.plot(wxt.index, wxt["compass"], ".-", ms=2, lw=0.6, color="C3",
+             label="WXT compass (°)")
+    ax2.set_ylabel("compass (°)", color="C3")
+    ax2.tick_params(axis="y", labelcolor="C3")
+    ax2.grid(alpha=0.4)
+    ax2b = ax2.twinx()
+    ax2b.plot(wxt.index, wxt["tilt_x"], ".-", ms=2, lw=0.6, color="C4",
+              label="WXT tilt_x (°)")
+    ax2b.plot(wxt.index, wxt["tilt_y"], ".-", ms=2, lw=0.6, color="C5",
+              label="WXT tilt_y (°)")
+    ax2b.set_ylabel("tilt (°)", color="0.3")
+    h1, l1 = ax2.get_legend_handles_labels()
+    h2, l2 = ax2b.get_legend_handles_labels()
+    ax2.legend(h1 + h2, l1 + l2, loc="upper right", fontsize=8)
+    note = ("WXT520 PTU (atmp / hrh / bpr) reported 0 for every record —"
+            " cannot be used as a humidity reference")
+    ax2.text(0.01, 0.95, note, transform=ax2.transAxes, fontsize=8,
+             color="0.2", va="top",
+             bbox=dict(facecolor="white", edgecolor="0.7", alpha=0.9))
 
     color_for = {"IN": "tab:blue", "OUT": "tab:orange",
                  "fan-on/OUT": "tab:red", "start": "k", "OFF": "k"}
