@@ -1,0 +1,30 @@
+2026-05-28 - SHS test
+
+RBR sensor - 3 seconds
+WXT - 1HZ
+CTD in tank - 1 Hz
+
+WHOI - Clark South ballast tank
+
+T/C log of tank: 20260528_tank_CT_log_EGH
+Wind/AT: ASWXT203.dat (in WXT folder)
+RBR/SHS: 05_29_26_RBR.rsk
+
+13:08z - SHS on, WXT logging, Tank CT logging, fan on
+13:11z - SHS IN tank
+13:27z - SHS OUT of tank
+13:56z - SHS IN tank
+14:01z - SHS OUT of tank
+14:56z - SHS IN tank
+15:01z - SHS OUT of tank 
+15:42z - SHS IN tank
+15:49z - SHS OUT of tank
+16:30z - SHS IN tank
+16:34z - SHS OUT of tank
+18:30z - SHS IN tank
+18:50z - SHS OUT of tank
+
+2026/05/29
+
+~11:10z - stop RBR and WXT and recover data
+

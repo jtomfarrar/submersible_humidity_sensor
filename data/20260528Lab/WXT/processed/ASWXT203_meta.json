@@ -1,0 +1,17 @@
+{
+  "infile": "data/20260528Lab/WXT/ASWXT203.DAT",
+  "instrument": {
+    "manufacturer": "Vaisala",
+    "model": "WXT520",
+    "model_vers": "SD"
+  },
+  "firmware_version": "VAISALA24 v5.65",
+  "board_version": "ASIPIC24 RevA",
+  "module_sn": "203",
+  "sensor_sn": "-",
+  "nrecs_decoded": 1322,
+  "bad_crc": 16,
+  "bad_time": 0,
+  "time_start": "2026-05-28T13:08:55",
+  "time_end": "2026-05-29T11:09:55"
+}

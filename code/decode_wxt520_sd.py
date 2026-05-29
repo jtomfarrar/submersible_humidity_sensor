@@ -250,6 +250,9 @@ def main(argv: list[str] | None = None) -> int:
         df = df.loc[df.index >= pd.Timestamp(args.tstart)]
     if args.tend:
         df = df.loc[df.index <= pd.Timestamp(args.tend)]
+    meta["nrecs_decoded"] = int(len(df))
+    meta["time_start"] = df.index.min().isoformat()
+    meta["time_end"] = df.index.max().isoformat()
 
     outdir = args.outdir or (args.infile.parent
                              / f"{args.infile.stem}_processed")
