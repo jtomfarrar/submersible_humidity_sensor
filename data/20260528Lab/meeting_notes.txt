@@ -1,0 +1,5 @@
+1. The relative humidity in the first 3 tests do not reach the WXT measurements. My hypothesis is that the wick was not fully soaked for the first three tests. We don’t need to changes test process per se, but we should keep an eye on if the first few dunks exhibit the same pattern in the next test.
+
+2. Simon suggested we have a live feed on the WXT measurements to get instant feedbacks on the adjustments. Can we implement this?
+
+3. The relative humidity response time is longer than the wet bulb response time (6-10 minutes). I will estimate the response time for dry bulb, temperature difference, and relative humidity, too. 
