@@ -1,7 +1,7 @@
 """Analyze the 2026-06-29 SHS lab test.
 
 This mirrors the 2026-05-28 lab-test analysis, and keeps the June 29
-original-wick test and June 30 plastic-wick follow-up separate where that
+cotton-wick test and June 30 plastic-wick follow-up separate where that
 matters:
 
 * 2026-06-29: original setup / wick, fan raised to max after first OUT.
@@ -76,7 +76,7 @@ ACTIVE_WINDOWS = [
     (
         pd.Timestamp("2026-06-29 15:23"),
         pd.Timestamp("2026-06-29 20:24"),
-        "2026-06-29 original wick",
+        "2026-06-29 cotton wick",
     ),
     (
         pd.Timestamp("2026-06-30 12:55"),
@@ -86,14 +86,14 @@ ACTIVE_WINDOWS = [
 ]
 
 IN_WINDOWS = [
-    ("2026-06-29 15:28", "2026-06-29 15:33", "J29-IN-1", "2026-06-29 original wick"),
-    ("2026-06-29 16:03", "2026-06-29 16:10", "J29-IN-2", "2026-06-29 original wick"),
-    ("2026-06-29 16:37", "2026-06-29 16:40", "J29-IN-3", "2026-06-29 original wick"),
-    ("2026-06-29 17:18", "2026-06-29 17:23", "J29-IN-4", "2026-06-29 original wick"),
-    ("2026-06-29 17:58", "2026-06-29 18:04", "J29-IN-5", "2026-06-29 original wick"),
-    ("2026-06-29 18:40", "2026-06-29 18:44", "J29-IN-6", "2026-06-29 original wick"),
-    ("2026-06-29 19:15", "2026-06-29 19:20", "J29-IN-7", "2026-06-29 original wick"),
-    ("2026-06-29 19:56", "2026-06-29 19:59", "J29-IN-8", "2026-06-29 original wick"),
+    ("2026-06-29 15:28", "2026-06-29 15:33", "J29-IN-1", "2026-06-29 cotton wick"),
+    ("2026-06-29 16:03", "2026-06-29 16:10", "J29-IN-2", "2026-06-29 cotton wick"),
+    ("2026-06-29 16:37", "2026-06-29 16:40", "J29-IN-3", "2026-06-29 cotton wick"),
+    ("2026-06-29 17:18", "2026-06-29 17:23", "J29-IN-4", "2026-06-29 cotton wick"),
+    ("2026-06-29 17:58", "2026-06-29 18:04", "J29-IN-5", "2026-06-29 cotton wick"),
+    ("2026-06-29 18:40", "2026-06-29 18:44", "J29-IN-6", "2026-06-29 cotton wick"),
+    ("2026-06-29 19:15", "2026-06-29 19:20", "J29-IN-7", "2026-06-29 cotton wick"),
+    ("2026-06-29 19:56", "2026-06-29 19:59", "J29-IN-8", "2026-06-29 cotton wick"),
     ("2026-06-30 13:08", "2026-06-30 13:14", "J30-IN-1", "2026-06-30 plastic wick"),
     ("2026-06-30 13:46", "2026-06-30 13:50", "J30-IN-2", "2026-06-30 plastic wick"),
     ("2026-06-30 14:23", "2026-06-30 14:29", "J30-IN-3", "2026-06-30 plastic wick"),
@@ -616,7 +616,20 @@ def make_tank_report_plot(
     diff_dry: pd.Series,
     diff_wet: pd.Series,
 ) -> None:
-    fig, axs = plt.subplots(2, 1, figsize=(11, 6.8), sharex=True)
+    wxt = load_wxt()
+    wxt_q = (
+        qs(wxt["bpr"].to_numpy(dtype=float) * 100.0, wxt["atmp"].to_numpy(dtype=float))
+        * (wxt["hrh"].to_numpy(dtype=float) / 100.0)
+        * 1000.0
+    )
+
+    fig, axs = plt.subplots(
+        4,
+        1,
+        figsize=(11, 8.8),
+        sharex=True,
+        gridspec_kw={"height_ratios": [2.5, 1.7, 1.5, 1.4]},
+    )
 
     axs[0].plot(shs.index, shs["T_dry_C"], lw=0.8, color="C0", label="SHS T_dry")
     axs[0].plot(shs.index, shs["T_wet_C"], lw=0.8, color="C1", label="SHS T_wet")
@@ -632,6 +645,30 @@ def make_tank_report_plot(
     axs[1].set_ylabel("delta T (deg C)")
     axs[1].legend(loc="best", fontsize=8)
     axs[1].grid(alpha=0.35)
+
+    axs[2].plot(
+        shs.index,
+        shs["specific_humidity_kg_per_kg"].where(shs["in_air"]) * 1000.0,
+        lw=0.8,
+        color="C3",
+        label="RBR psych q (in air)",
+    )
+    axs[2].plot(wxt.index, wxt_q, lw=0.8, color="C4", alpha=0.85, label="WXT q")
+    axs[2].set_ylabel("q (g/kg)")
+    axs[2].legend(loc="best", fontsize=8)
+    axs[2].grid(alpha=0.35)
+
+    axs[3].plot(
+        shs.index,
+        shs["pressure_used_hPa"],
+        lw=0.8,
+        color="C0",
+        label="pressure used",
+    )
+    axs[3].plot(wxt.index, wxt["bpr"], lw=0.8, color="C2", alpha=0.85, label="WXT pressure")
+    axs[3].set_ylabel("p (hPa)")
+    axs[3].legend(loc="best", fontsize=8)
+    axs[3].grid(alpha=0.35)
 
     shade_in_water(axs, alpha=0.22)
     mark_configuration_change(axs)
@@ -904,7 +941,7 @@ def air_windows() -> list[tuple[pd.Timestamp, pd.Timestamp, str, str]]:
             pd.Timestamp("2026-06-29 15:23"),
             pd.Timestamp("2026-06-29 15:28"),
             "06-29 15:23-15:28",
-            "2026-06-29 original wick",
+            "2026-06-29 cotton wick",
         ),
     )
     windows.insert(
@@ -1547,7 +1584,7 @@ def write_report(
 \section{{Setup}}
 
 The test repeated the 2026-05-28 dunk-cycle workflow with two configurations.
-On 2026-06-29 the SHS was run in the original wick setup; the fan was raised to
+On 2026-06-29 the SHS was run in the cotton wick setup; the fan was raised to
 maximum after the first OUT event. The 2026-06-30 follow-up changed to a plastic
 friction-fit wick at 12:55 UTC, with the fan turned on at the first IN.
 
@@ -1610,8 +1647,8 @@ friction-fit wick and the five subsequent dunk cycles.
   \includegraphics[width=0.31\linewidth,height=0.24\textheight,keepaspectratio]{{../../data/20260629Lab/IMG_7611.jpeg}}\hfill
   \includegraphics[width=0.31\linewidth,height=0.24\textheight,keepaspectratio]{{../../data/20260629Lab/IMG_7612.jpeg}}\hfill
   \includegraphics[width=0.31\linewidth,height=0.24\textheight,keepaspectratio]{{../../data/20260629Lab/IMG_7613.jpeg}}
-  \caption{{Setup photographs from \texttt{{data/20260629Lab}}. Top: June 29
-  original-wick layout with the WXT520, SHS wet/dry-bulb mast, fan, and ballast
+    \caption{{Setup photographs from \texttt{{data/20260629Lab}}. Top: June 29
+    cotton-wick layout with the WXT520, SHS wet/dry-bulb mast, fan, and ballast
   tank. Bottom: June 30 plastic-wick follow-up, including the friction-fit wick
   close-up and wider fan-facing instrument layout.}}
   \label{{fig:photo_log}}
@@ -1633,7 +1670,7 @@ friction-fit wick and the five subsequent dunk cycles.
 {humidity_table()}
 \end{{center}}
 
-The original-wick day tracks the WXT520 closely during active in-air windows.
+The cotton-wick day tracks the WXT520 closely during active in-air windows.
 The plastic-wick day shows a much larger psychrometric humidity offset, so that
 configuration should be treated as unresolved until the wick geometry and wetting
 state are checked. The full post-test record remains useful for seeing wick
@@ -1645,10 +1682,12 @@ from the note-defined test windows.
 \begin{{figure}}[htbp]
   \centering
   \includegraphics[width=\linewidth]{{../../img/Lab20260629/Lab20260629_SHS_vs_tank_report.png}}
-  \caption{{Top: SHS dry- and wet-bulb temperatures with the in-tank CT
-  reference. Bottom: SHS minus tank-temperature residuals during periods with CT
-  coverage. Grey bands mark in-water periods; the green dashed line marks the
-  June 30 plastic-wick change.}}
+  \caption{{From top to bottom: SHS dry- and wet-bulb temperatures with the
+  in-tank CT reference; SHS minus tank-temperature residuals during periods with
+  CT coverage; WXT and in-air RBR psychrometric specific humidity; and air
+  pressure used in the psychrometric calculation with WXT pressure. Grey bands
+  mark in-water periods; the green dashed line marks the June 30 plastic-wick
+  change.}}
   \label{{fig:tank}}
 \end{{figure}}
 
@@ -1657,6 +1696,28 @@ from the note-defined test windows.
 \end{{center}}
 
 \section{{Response Times}}
+
+Response-time estimates are computed separately for each OUT event and variable.
+For each segment, time is re-zeroed at OUT ($t=0$) and data are fit with
+
+\[
+y(t) = A + B\,e^{-t/\tau}
+\]
+
+over the interval from OUT to
+$\min(\text{{OUT}}+25\,\text{{min}},\,\text{{next IN}})$.
+The reported $\tau$ values are medians across events in each phase.
+If the optimizer reaches the upper bound ($\tau=7200$ s), the result is marked
+as capped (non-exponential or unresolved) rather than interpreted as a physical
+time constant.
+
+The settling metrics in the second table are computed from the wet-bulb curve:
+the wet-bulb series is smoothed (7-point centered rolling mean), the cooling-rate
+peak is the minimum of $dT_w/dt$, and $t_\text{{knee}}$ is the first time after
+that peak when $dT_w/dt$ rises above 10\% of the peak-cooling rate. The
+63\%-response time is
+$t_{{63}} = \min\{{t: T_w(t) \le T_{{w,0}} - 0.63\,(T_{{w,0}}-T_{{w,\text{{plat}}}})\}}$,
+where $T_{{w,\text{{plat}}}}$ is the plateau estimate used for each interval.
 
 \begin{{figure}}[htbp]
   \centering

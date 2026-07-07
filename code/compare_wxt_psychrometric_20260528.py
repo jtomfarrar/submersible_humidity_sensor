@@ -47,7 +47,7 @@ def main() -> None:
     comp["wxt_e_hPa"] = es(comp["atmp"].to_numpy(), wxt_p_pa.to_numpy()) * (
         comp["hrh"].to_numpy() / 100.0
     ) / 100.0
-    comp["wxt_q_gkg"] = (
+    comp["wxt_specific_humidity_gkg"] = (
         qs(wxt_p_pa.to_numpy(), comp["atmp"].to_numpy())
         * (comp["hrh"].to_numpy() / 100.0)
         * 1000.0
@@ -55,10 +55,14 @@ def main() -> None:
     comp["psy_e_hPa"] = es(comp["psy_T_dry_C"].to_numpy(), PSY_PRESSURE_PA) * (
         comp["psy_RH_pct"].to_numpy() / 100.0
     ) / 100.0
-    comp["psy_q_gkg"] = comp["psy_q_kg_per_kg"] * 1000.0
+    comp["psy_specific_humidity_gkg"] = (
+        comp["psy_specific_humidity_kg_per_kg"] * 1000.0
+    )
     comp["dRH_psy_minus_wxt_pct"] = comp["psy_RH_pct"] - comp["hrh"]
     comp["de_psy_minus_wxt_hPa"] = comp["psy_e_hPa"] - comp["wxt_e_hPa"]
-    comp["dq_psy_minus_wxt_gkg"] = comp["psy_q_gkg"] - comp["wxt_q_gkg"]
+    comp["dspecific_humidity_psy_minus_wxt_gkg"] = (
+        comp["psy_specific_humidity_gkg"] - comp["wxt_specific_humidity_gkg"]
+    )
     psy_in_air = comp["psy_in_air"].astype("boolean").fillna(False)
     comp["comparison_valid"] = (
         psy_in_air
@@ -72,17 +76,17 @@ def main() -> None:
         "hrh",
         "bpr",
         "wxt_e_hPa",
-        "wxt_q_gkg",
+        "wxt_specific_humidity_gkg",
         "psy_T_dry_C",
         "psy_T_wet_C",
         "psy_RH_pct",
         "psy_e_hPa",
-        "psy_q_gkg",
+        "psy_specific_humidity_gkg",
         "psy_in_air",
         "comparison_valid",
         "dRH_psy_minus_wxt_pct",
         "de_psy_minus_wxt_hPa",
-        "dq_psy_minus_wxt_gkg",
+        "dspecific_humidity_psy_minus_wxt_gkg",
     ]
     comp[out_cols].to_csv(OUT_CSV, index_label="time")
     print(f"wrote {OUT_CSV}")
@@ -129,9 +133,9 @@ def print_summary(label: str, df: pd.DataFrame, compact: bool = False) -> None:
         "WXT_e": df["wxt_e_hPa"].mean(),
         "PSY_e": df["psy_e_hPa"].mean(),
         "de": df["de_psy_minus_wxt_hPa"].mean(),
-        "WXT_q": df["wxt_q_gkg"].mean(),
-        "PSY_q": df["psy_q_gkg"].mean(),
-        "dq": df["dq_psy_minus_wxt_gkg"].mean(),
+        "WXT_spec_hum": df["wxt_specific_humidity_gkg"].mean(),
+        "PSY_spec_hum": df["psy_specific_humidity_gkg"].mean(),
+        "d_spec_hum": df["dspecific_humidity_psy_minus_wxt_gkg"].mean(),
     }
     if not compact:
         print("\n" + label)
@@ -144,8 +148,9 @@ def print_summary(label: str, df: pd.DataFrame, compact: bool = False) -> None:
             "diff={de:+.2f} hPa".format(**parts)
         )
         print(
-            "q  WXT={WXT_q:.2f} g/kg psych={PSY_q:.2f} g/kg "
-            "diff={dq:+.2f} g/kg".format(**parts)
+            "specific humidity WXT={WXT_spec_hum:.2f} g/kg "
+            "psych={PSY_spec_hum:.2f} g/kg "
+            "diff={d_spec_hum:+.2f} g/kg".format(**parts)
         )
         return
 
@@ -153,7 +158,7 @@ def print_summary(label: str, df: pd.DataFrame, compact: bool = False) -> None:
         f"{label:<17s} N={parts['N']:4d} "
         f"dRH={parts['dRH']:+6.2f} pct-pt "
         f"de={parts['de']:+6.2f} hPa "
-        f"dq={parts['dq']:+6.2f} g/kg"
+        f"d_spec_hum={parts['d_spec_hum']:+6.2f} g/kg"
     )
 
 
@@ -199,17 +204,35 @@ def make_plot(comp: pd.DataFrame, valid: pd.DataFrame) -> None:
     axs[1].grid(alpha=0.4)
     axs[1].legend(loc="upper right", fontsize=8)
 
-    axs[2].axhline(0, color="0.5", lw=0.5)
     axs[2].plot(
+        comp.index,
+        comp["wxt_specific_humidity_gkg"],
+        lw=0.8,
+        color="C0",
+        label="WXT520 specific humidity (from T_air, RH, p)",
+    )
+    axs[2].plot(
+        valid.index,
+        valid["psy_specific_humidity_gkg"],
+        lw=0.8,
+        color="C1",
+        label="Psychrometric specific humidity (RBR wet/dry-bulb)",
+    )
+    axs[2].set_ylabel("Specific humidity (g/kg)")
+    axs[2].grid(alpha=0.4)
+    axs[2].legend(loc="upper right", fontsize=8)
+
+    axs[3].axhline(0, color="0.5", lw=0.5)
+    axs[3].plot(
         valid.index,
         valid["dRH_psy_minus_wxt_pct"],
         lw=0.8,
         color="C3",
         label="RH difference (psychrometric - WXT520)",
     )
-    axs[2].set_ylabel("RH difference (percentage points)")
-    axs[2].grid(alpha=0.4)
-    ax2 = axs[2].twinx()
+    axs[3].set_ylabel("RH difference (percentage points)")
+    axs[3].grid(alpha=0.4)
+    ax2 = axs[3].twinx()
     ax2.plot(
         valid.index,
         valid["de_psy_minus_wxt_hPa"],
@@ -218,45 +241,28 @@ def make_plot(comp: pd.DataFrame, valid: pd.DataFrame) -> None:
         label="Vapor pressure difference (psychrometric - WXT520)",
     )
     ax2.set_ylabel("Vapor pressure difference (hPa)")
-    h1, l1 = axs[2].get_legend_handles_labels()
+    h1, l1 = axs[3].get_legend_handles_labels()
     h2, l2 = ax2.get_legend_handles_labels()
-    axs[2].legend(h1 + h2, l1 + l2, loc="upper right", fontsize=8)
-
-    axs[3].plot(
-        valid["wxt_e_hPa"],
-        valid["psy_e_hPa"],
-        ".",
-        ms=4,
-        alpha=0.55,
-        color="C2",
-    )
-    low = float(np.nanmin([valid["wxt_e_hPa"].min(), valid["psy_e_hPa"].min()]))
-    high = float(np.nanmax([valid["wxt_e_hPa"].max(), valid["psy_e_hPa"].max()]))
-    axs[3].plot([low, high], [low, high], color="0.4", lw=0.8, label="1:1 line")
-    axs[3].set_xlim(low, high)
-    axs[3].set_ylim(low, high)
-    axs[3].set_xlabel("WXT520 vapor pressure, e (hPa)")
-    axs[3].set_ylabel("Psychrometric vapor pressure, e (hPa)")
-    axs[3].grid(alpha=0.4)
-    axs[3].legend(loc="upper left", fontsize=8)
+    axs[3].legend(h1 + h2, l1 + l2, loc="upper right", fontsize=8)
 
     for h0, h1, _label in IN_OUT:
         t0 = pd.Timestamp(f"{DAY} {h0}")
         t1 = pd.Timestamp(f"{DAY} {h1}")
-        for ax in axs[:3]:
+        for ax in axs[:4]:
             ax.axvspan(t0, t1, color="0.8", alpha=0.35, zorder=0)
 
     for h, kind in NOTES:
         ts = note_time(h)
-        for ax in axs[:3]:
+        for ax in axs[:4]:
             ax.axvline(ts, color="0.5", ls="--", lw=0.5, alpha=0.5)
 
-    for ax in axs[:3]:
+    for ax in axs[:4]:
         ax.set_xlim(comp.index.min(), comp.index.max())
     axs[0].tick_params(labelbottom=False)
     axs[1].tick_params(labelbottom=False)
-    axs[2].xaxis.set_major_formatter(mdates.DateFormatter("%m-%d %H:%M"))
-    axs[2].set_xlabel("time (UTC)")
+    axs[2].tick_params(labelbottom=False)
+    axs[3].xaxis.set_major_formatter(mdates.DateFormatter("%m-%d %H:%M"))
+    axs[3].set_xlabel("time (UTC)")
     fig.tight_layout()
     fig.savefig(OUT_PNG, dpi=130)
 

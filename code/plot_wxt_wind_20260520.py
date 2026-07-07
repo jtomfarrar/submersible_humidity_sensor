@@ -32,8 +32,6 @@ def main() -> None:
 
     ax = axes[0]
     ax.plot(t_rep, wspd, ".", ms=2, color="C0", label="wspd (11/min raw)")
-    ax.plot(df.index, df["wspd_min"], "-", lw=0.8, color="C2", label="wspd_min")
-    ax.plot(df.index, df["wspd_max"], "-", lw=0.8, color="C3", label="wspd_max")
     ax.set_ylabel("wind speed [m/s]")
     ax.legend(loc="upper right", fontsize=8)
     ax.set_title(

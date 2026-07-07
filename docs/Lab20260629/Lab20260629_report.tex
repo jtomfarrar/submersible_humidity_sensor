@@ -18,7 +18,7 @@
 \vspace{0.4ex}
 \noindent{\large Clark South Ballast Tank, WHOI\par}
 \vspace{1.0ex}
-\noindent Yu Gao; Emerson Hasbrouck; Tom Farrar; Simon de Szoeke; Steven Jayne; Alexander Ekholm\par
+\noindent Yu Gao; Emerson Hasbrouck; Tom Farrar; de Szoeke; Simon; Steven Jayne; Alexander Ekholm\par
 \vspace{0.4ex}
 \noindent Test date: 2026-06-29. The data record also includes the 2026-06-30 plastic-wick follow-up and post-test data through 2026-07-01 16:18 UTC.\par
 \bigskip\hrule\bigskip
@@ -26,7 +26,7 @@
 \section{Setup}
 
 The test repeated the 2026-05-28 dunk-cycle workflow with two configurations.
-On 2026-06-29 the lab test was run in the original wick setup; the fan was raised to
+On 2026-06-29 the SHS was run in the cotton wick setup; the fan was raised to
 maximum after the first OUT event. The 2026-06-30 follow-up changed to a plastic
 friction-fit wick at 12:55 UTC, with the fan turned on at the first IN.
 
@@ -73,7 +73,7 @@ J30-IN-5 & 06-30 16:02 & 16:08 & 6 min \\
 \toprule
 Phase & T (\si{\degreeCelsius}) & RH (\%) & p (mbar) & wind (m/s) \\
 \midrule
-2026-06-29 original wick & 21.33 & 72.5 & 1016.82 & 0.94 \\
+2026-06-29 cotton wick & 21.33 & 72.5 & 1016.82 & 0.94 \\
 2026-06-30 plastic wick & 21.21 & 72.9 & 1018.09 & 0.76 \\
 \bottomrule
 \end{tabular}
@@ -97,7 +97,7 @@ friction-fit wick and the five subsequent dunk cycles.
   \includegraphics[width=0.31\linewidth,height=0.24\textheight,keepaspectratio]{../../data/20260629Lab/IMG_7612.jpeg}\hfill
   \includegraphics[width=0.31\linewidth,height=0.24\textheight,keepaspectratio]{../../data/20260629Lab/IMG_7613.jpeg}
   \caption{Setup photographs from \texttt{data/20260629Lab}. Top: June 29
-  original-wick layout with the WXT520, SHS wet/dry-bulb mast, fan, and ballast
+  cotton-wick layout with the WXT520, SHS wet/dry-bulb mast, fan, and ballast
   tank. Bottom: June 30 plastic-wick follow-up, including the friction-fit wick
   close-up and wider fan-facing instrument layout.}
   \label{fig:photo_log}
@@ -120,13 +120,13 @@ friction-fit wick and the five subsequent dunk cycles.
 \toprule
 Phase & N & WXT RH & psych RH & $\Delta$RH & $\Delta e$ \\
 \midrule
-2026-06-29 original wick & 263 & 72.47 & 74.23 & +1.75 & +0.52 \\
+2026-06-29 cotton wick & 263 & 72.47 & 74.23 & +1.75 & +0.52 \\
 2026-06-30 plastic wick & 273 & 72.90 & 93.57 & +20.67 & +5.34 \\
 \bottomrule
 \end{tabular}
 \end{center}
 
-The original-wick day tracks the WXT520 closely during active in-air windows.
+The cotton-wick day tracks the WXT520 closely during active in-air windows.
 The plastic-wick day shows a much larger psychrometric humidity offset, so that
 configuration should be treated as unresolved until the wick geometry and wetting
 state are checked. The full post-test record remains useful for seeing wick
@@ -138,10 +138,12 @@ from the note-defined test windows.
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\linewidth]{../../img/Lab20260629/Lab20260629_SHS_vs_tank_report.png}
-  \caption{Top: SHS dry- and wet-bulb temperatures with the in-tank CT
-  reference. Bottom: SHS minus tank-temperature residuals during periods with CT
-  coverage. Grey bands mark in-water periods; the green dashed line marks the
-  June 30 plastic-wick change.}
+  \caption{From top to bottom: SHS dry- and wet-bulb temperatures with the
+  in-tank CT reference; SHS minus tank-temperature residuals during periods with
+  CT coverage; WXT and in-air RBR psychrometric specific humidity; and air
+  pressure used in the psychrometric calculation with WXT pressure. Grey bands
+  mark in-water periods; the green dashed line marks the June 30 plastic-wick
+  change.}
   \label{fig:tank}
 \end{figure}
 
@@ -150,12 +152,12 @@ from the note-defined test windows.
 \toprule
 Cycle & Phase & $T_\text{tank}$ & $T_d-T_\text{tank}$ & $T_w-T_\text{tank}$ & N \\
 \midrule
-J29-IN-1 & 29 original wick & 20.810 & +0.006 & +0.001 & 101 \\
-J29-IN-2 & 29 original wick & 20.805 & +0.003 & -0.014 & 141 \\
-J29-IN-3 & 29 original wick & 20.799 & +0.043 & -0.273 & 61 \\
-J29-IN-4 & 29 original wick & 20.794 & +0.077 & -0.375 & 101 \\
-J29-IN-5 & 29 original wick & 20.788 & +0.003 & -0.018 & 121 \\
-J29-IN-7 & 29 original wick & 20.783 & +0.113 & -0.437 & 101 \\
+J29-IN-1 & 29 cotton wick & 20.810 & +0.006 & +0.001 & 101 \\
+J29-IN-2 & 29 cotton wick & 20.805 & +0.003 & -0.014 & 141 \\
+J29-IN-3 & 29 cotton wick & 20.799 & +0.043 & -0.273 & 61 \\
+J29-IN-4 & 29 cotton wick & 20.794 & +0.077 & -0.375 & 101 \\
+J29-IN-5 & 29 cotton wick & 20.788 & +0.003 & -0.018 & 121 \\
+J29-IN-7 & 29 cotton wick & 20.783 & +0.113 & -0.437 & 101 \\
 J30-IN-1 & 30 plastic wick & 20.517 & +0.041 & +0.040 & 121 \\
 J30-IN-2 & 30 plastic wick & 20.517 & +0.018 & +0.006 & 81 \\
 J30-IN-3 & 30 plastic wick & 20.513 & +0.053 & -0.024 & 121 \\
@@ -166,6 +168,28 @@ J30-IN-5 & 30 plastic wick & 20.511 & +0.115 & +0.105 & 121 \\
 \end{center}
 
 \section{Response Times}
+
+Response-time estimates are computed separately for each OUT event and variable.
+For each segment, time is re-zeroed at OUT ($t=0$) and data are fit with
+
+\[
+y(t) = A + B\,e^{-t/\tau}
+\]
+
+over the interval from OUT to
+$\min(\text{OUT}+25\,\text{min},\,\text{next IN})$.
+The reported $\tau$ values are medians across events in each phase.
+If the optimizer reaches the upper bound ($\tau=7200$ s), the result is marked
+as capped (non-exponential or unresolved) rather than interpreted as a physical
+time constant.
+
+The settling metrics in the second table are computed from the wet-bulb curve:
+the wet-bulb series is smoothed (7-point centered rolling mean), the cooling-rate
+peak is the minimum of $dT_w/dt$, and $t_\text{knee}$ is the first time after
+that peak when $dT_w/dt$ rises above 10\% of the peak-cooling rate. The
+63\%-response time is
+$t_{63} = \min\{t: T_w(t) \le T_{w,0} - 0.63\,(T_{w,0}-T_{w,\text{plat}})\}$,
+where $T_{w,\text{plat}}$ is the plateau estimate used for each interval.
 
 \begin{figure}[htbp]
   \centering
@@ -183,7 +207,7 @@ J30-IN-5 & 30 plastic wick & 20.511 & +0.115 & +0.105 & 121 \\
 \toprule
 Phase & N & $\tau_{T_d}$ & $\tau_{T_w}$ & $\tau_\text{dep}$ & $\tau_\text{RH}$ \\
 \midrule
-2026-06-29 original wick & 8 & 47 & 37 & 38 & 38 \\
+2026-06-29 cotton wick & 8 & 47 & 37 & 38 & 38 \\
 2026-06-30 plastic wick & 5 & 56 & $\geq7200^*$ & $\geq7200^*$ & $\geq7200^*$ \\
 \bottomrule
 \end{tabular}
@@ -197,7 +221,7 @@ values as non-exponential or unresolved rather than physical time constants.}
 \toprule
 Phase & N & median $t_\text{knee}$ (s) & median $t_{63}$ (s) & RH at plateau (\%) \\
 \midrule
-2026-06-29 original wick & 8 & 90 & 48 & 73.5 \\
+2026-06-29 cotton wick & 8 & 90 & 48 & 73.5 \\
 2026-06-30 plastic wick & 5 & 66 & 30 & 88.5 \\
 \bottomrule
 \end{tabular}

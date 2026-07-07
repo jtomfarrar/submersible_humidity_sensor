@@ -1,4 +1,4 @@
-1. The relative humidity in the first 3 tests do not reach the WXT measurements. My hypothesis is that the wick was not fully soaked for the first three tests. We don’t need to changes test process per se, but we should keep an eye on if the first few dunks exhibit the same pattern in the next test.
+1. The relative humidity in the first 3 tests do not reach the WXT measurements. My hypothesis is that the wick was not fully soaked for the first three tests. We don’t need to changes test process per se, but we should keep an eye on if the first few dunks exhibit the same pattern in the next test. - No truncation issue — the values are correctly rounded to 0.1°C steps (all fractional parts are 0.0, 0.1, 0.2 … 0.9).
 
 2. Simon suggested we have a live feed on the WXT measurements to get instant feedbacks on the adjustments. Can we implement this?
 

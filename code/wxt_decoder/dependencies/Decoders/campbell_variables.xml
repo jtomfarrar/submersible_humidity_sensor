@@ -1,0 +1,170 @@
+<root>
+    <mday>
+        <description>Matlab datetime(UTC). Derived from CR1000x posix time-stamp.</description>
+        <sampling_method>measured at the end of each minute</sampling_method>
+    </mday>
+    <RECORD>
+        <description>Record number assigned to each one-minute record. Assigned by CR1000x data logger.</description>
+    </RECORD>
+    <posix>
+        <description>Campbell CR1000x internally recorded POSIX time; number of seconds since 1970/01/01 00:00:00 UTC</description>
+        <unit>seconds</unit>
+        <sampling_method>measured at the end of each minute</sampling_method>
+    </posix>
+    <atmp>
+        <description>Atmospheric Temperature</description>
+        <unit>degrees Celsius</unit>
+        <sampling_method>Sampled at end of minute</sampling_method>
+    </atmp>
+    <hrh>
+        <description>Relative Humidity</description>
+        <unit>% RH</unit>
+        <sampling_method>Sampled at end of minute</sampling_method>
+    </hrh>
+    <bpr>
+        <description>Barometric pressure</description>
+        <unit>mbar</unit>
+        <sampling_method>Average of twelve samples taken every 5 seconds</sampling_method>
+        <QC>Samples less than 900mbar are removed from sample average</QC>
+    </bpr>
+    <lwr>
+        <description>Temperature compensated long wave down radiation</description>
+        <unit>W/m^2</unit>
+        <note>RS485-MODBUS register #10</note>
+        <sampling_method>Average of twelve samples taken every 5 seconds</sampling_method>
+    </lwr>
+    <lwr_volts>
+        <description>SGR4V External power voltage</description>
+        <unit>Volts</unit>
+        <note>RS485-MODBUS register #9</note>
+        <sampling_method>measured at the end of each minute</sampling_method>
+    </lwr_volts>
+    <lwr_btemp>
+        <description>SGR4V Body Temperature</description>
+        <unit>degrees Celsius</unit>
+        <note>RS485-MODBUS register #8</note>
+        <sampling_method>measured at the end of each minute</sampling_method>
+    </lwr_btemp>
+    <swr>
+        <description>Temperature compensated shortwave radiation</description>
+        <unit>W/m^2</unit>
+        <note>RS485-MODBUS register #5</note>
+        <sampling_method>Average of twelve samples taken every 5 seconds</sampling_method>
+    </swr>
+    <swr2>
+        <description>Net shortwave Radiation</description>
+        <unit>W/m^2</unit>
+        <note>RS485-MODBUS register #6</note>
+        <sampling_method>Average of twelve samples taken every 5 seconds</sampling_method>
+    </swr2>
+    <swr_volts>
+        <description>SMP21V External power voltage</description>
+        <unit>Volts</unit>
+        <note>RS485-MODBUS register #9</note>
+        <sampling_method>measured at the end of each minute</sampling_method>
+    </swr_volts>
+    <swr_btemp>
+        <description>SMP21V Body Temperature</description>
+        <unit>degrees Celsius</unit>
+        <note>RS485-MODBUS register #8</note>
+        <sampling_method>measured at the end of each minute</sampling_method>
+    </swr_btemp>
+    <wnde>
+        <description>Winds toward East (oceanographic convention)</description>
+        <unit>m/s</unit>
+        <sampling_method>Wind components are derived from wind speed, direction, and compass. wnde is a scalar average of twelve 5 second measurements.</sampling_method>
+        <note>Wind variables are relative to magnetic north. They are not rotated to true North.</note>
+    </wnde>
+    <wndn>
+        <description>Winds toward North (oceanographic convention)</description>
+        <unit>m/s</unit>
+        <sampling_method>Wind components are derived from wind speed, direction, and compass. wndn is a scalar average of twelve 5 second measurements.</sampling_method>
+        <note>Wind variables are relative to magnetic north. They are not rotated to true North.</note>
+    </wndn>
+    <wdir>
+        <description>Wind direction (oceanographic convention)</description>
+        <unit>degrees</unit>
+        <sampling_method>Wind direction is derived from wind vane and compass. wdir represents a vector average of twelve 5 second measurements</sampling_method>
+        <note>Wind variables are relative to magnetic north. They are not rotated to true North.</note>
+    </wdir>
+    <wspd>
+        <description>Scalar wind speed</description>
+        <unit>m/s</unit>
+        <sampling_method>Average of twelve samples taken every 5 seconds</sampling_method>
+    </wspd>
+    <wspd_min>
+        <description>Minimum wind speed</description>
+        <unit>m/s</unit>
+        <sampling_method>smallest magnitude of wind speed chosen from twelve measurements taken every 5 seconds</sampling_method>
+    </wspd_min>
+    <wspd_max>
+        <description>Maximum wind speed</description>
+        <unit>m/s</unit>
+        <sampling_method>largest magnitude wind speed chosen from twelve measurements taken every 5 seconds</sampling_method>
+    </wspd_max>
+    <compass>
+        <description>Compass direction</description>
+        <unit>degrees</unit>
+        <note>Magnetic declination depends on how compass enclosure is mounted to buoy. Nominally 40 degrees clockwise of buoy vane. Compass is relative to magnetic north. It has not been rotated to true North.</note>
+        <sampling_method>Vector average of twelve 5 second measurements</sampling_method>
+    </compass>
+    <vane>
+        <description>Direction of vane on RM Young Wind monitor</description>
+        <unit>degrees</unit>
+        <sampling_method>Vector average of twelve 5 second measurements</sampling_method>
+        <note>Wind variables are relative to magnetic north. They are not rotated to true North.</note>
+    </vane>
+    <precip>
+        <description>Cumulative Precipitation</description>
+        <unit>mm</unit>
+        <note>Analog voltage conversion: 1V=10mm</note>
+        <sampling_method>measured at the end of each minute</sampling_method>
+    </precip>
+    <sst>
+        <description>Sea Surface Temperature</description>
+        <unit>degrees Celsius</unit>
+        <sampling_method>measured at the end of each minute</sampling_method>
+    </sst>
+    <cond>
+        <description>Sea Surface Conductivity</description>
+        <unit>S/m</unit>
+        <sampling_method>measured at the end of each minute</sampling_method>
+    </cond>
+    <LAT>
+        <description>Latitude</description>
+        <unit>degrees</unit>
+        <sampling_method>Average of twelve samples taken every 5 seconds</sampling_method>
+    </LAT>
+    <LON>
+        <description>Longitude</description>
+        <unit>degrees</unit>
+        <sampling_method>Average of twelve samples taken every 5 seconds</sampling_method>
+    </LON>
+    <gps_time>
+        <description>GPS HH:MM:SS (UTC) timestamp</description>
+        <sampling_method>measured at the end of each minute</sampling_method>
+        <note>gps_time may be recorded up to 5 seconds prior to mday and POSIX variables</note>
+    </gps_time>
+    <load_mA>
+        <description>Total system load as recorded by CH200</description>
+        <unit>mA</unit>
+        <sampling_method>Average of twelve samples taken every 5 seconds</sampling_method>
+    </load_mA>
+    <BATT>
+        <description>Battery voltage as recorded by CH200</description>
+        <unit>volts</unit>
+        <sampling_method>Average of twelve samples taken every 5 seconds</sampling_method>
+    </BATT>
+    <temp_CR1000x>
+        <description>Temperature recorded by CR1000x</description>
+        <unit>degrees Celsius</unit>
+        <note>CR1000x is located in air-tight chassis, this will deviate from air temperature</note>
+        <sampling_method>Average of twelve samples taken every 5 seconds</sampling_method>
+    </temp_CR1000x>
+    <temp_CH200>
+        <description>Temperature recorded by CH200</description>
+        <unit>degrees Celsius</unit>
+        <note>CH200 is located in air-tight chassis, this will deviate from air temperature</note>
+        <sampling_method>Average of twelve samples taken every 5 seconds</sampling_method>
+    </temp_CH200>
+</root>

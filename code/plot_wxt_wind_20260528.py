@@ -33,9 +33,10 @@ def main() -> None:
     fig, axes = plt.subplots(5, 1, figsize=(10, 11), sharex=True)
 
     ax = axes[0]
-    ax.plot(t_rep, wspd, ".", ms=2, color="C0", label="wspd (11/min raw)")
-    ax.plot(df.index, df["wspd_min"], "-", lw=0.8, color="C2", label="wspd_min")
-    ax.plot(df.index, df["wspd_max"], "-", lw=0.8, color="C3", label="wspd_max")
+    ax.plot(t_rep, wspd, ".", ms=2, color="0.6",
+            label="wspd11 (5-s snapshots, 11/min)")
+    ax.plot(df.index, df["wspd"], "-", lw=0.8, color="C0",
+            label="wspd (vector-averaged from wspd11)")
     ax.set_ylabel("wind speed [m/s]")
     ax.legend(loc="best", fontsize=8)
     ax.set_title(
@@ -109,6 +110,19 @@ def main() -> None:
         )
     )
     print("wndflag value_counts:\n", df["wndflag"].value_counts().to_string())
+
+    # Diagnostic: how often do the 5-s snapshots fall outside the
+    # WXT-reported 3-s gust min/max envelope?  This is expected: the firmware
+    # min/max comes from internal high-rate sampling, while wspd11 are 5-s
+    # point samples that need not bracket the 3-s gust extremes.
+    samp_min = df["wspd11"].apply(np.min)
+    samp_max = df["wspd11"].apply(np.max)
+    below = (samp_min < df["wspd_min"] - 1e-6).sum()
+    above = (samp_max > df["wspd_max"] + 1e-6).sum()
+    print(
+        f"snapshots vs gust envelope: {below}/{len(df)} records have a "
+        f"sample below wspd_min; {above}/{len(df)} have a sample above wspd_max"
+    )
 
 
 if __name__ == "__main__":
