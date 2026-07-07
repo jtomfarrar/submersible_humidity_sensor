@@ -1,0 +1,37 @@
+20260629/30 SHS testing
+
+20260629:
+
+1450z - start RBR SHS, WXT on
+1523z - fan on level 2 - wxt measuring wind
+1527z - start CT tank log
+1528z - SHS in tank
+1533z - SHS out of tank - fan increased to max setting - both probes facing fan - see picture
+1603z - SHS IN water
+1610z - SHS OUT
+1637z - SHS IN
+1640z - SHS OUT
+1718z - SHS IN
+1723z - SHS OUT
+1758z - SHS IN
+1804z - SHS OUT
+1840z - SHS IN
+1844z - SHS OUT
+1915z - SHS IN
+1920z - SHS OUT
+1956z - SHS IN
+1959z - SHS OUT
+
+20260630 --------------
+
+1255z - fan off switch to plastic wick, no zip tie, just friction fit
+1308z - SHS IN - fan on
+1314z - SHS OUT
+1346z - SHS IN
+1350z - SHS OUT
+1423z - SHS IN
+1429z - SHS OUT
+1458z - SHS IN
+1530z - SHS OUT
+1602z - SHS IN
+1608z - SHS OUT
